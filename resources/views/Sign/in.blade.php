@@ -32,14 +32,13 @@
                 </div>
                 <h4>Hello! let's get started</h4>
                 <h6 class="font-weight-light">Sign in to continue.</h6>
-                <form class="pt-3" action="/Signin" method="post">
+                <form class="pt-3" action="/Signin" method="post" id="form">
                   @csrf
                   <div class="form-group">
-                    <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email" name="email">
+                    <input type="email" class="form-control form-control-lg" id="email" placeholder="Email" name="email">
                   </div>
                   <div class="form-group">
-                    <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password" name="
-                    password">
+                    <input type="password" class="form-control form-control-lg" id="password" placeholder="Password" name="password">
                   </div>
                   <div class="mt-3 d-grid gap-2">
                     <input type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn custom-btn" value="SIGN IN" >
@@ -65,6 +64,65 @@
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="assets/vendors/js/vendor.bundle.base.js"></script>
+    <script src="assets/vendors/jquery-3.7.1.min.js"></script>
+    <script src="assets/vendors/jquery-validation-1.19.5/jquery.validate.min.js"></script>
+    <script src="assets/vendors/jquery-validation-1.19.5/additional-methods.min.js"></script>
+    <script src="assets/vendors/sweetalert/sweetalert.min.js"></script>
+
+    <script>
+    $(document).ready(function () {
+        $('#form').validate({
+          rules: {
+            email: {
+              required: true,
+              email: true
+            },
+            password: {
+              required: true
+            }
+          },
+          messages: {
+            email: {
+              required: 'Email harus diisi',
+              email: 'Harus sesuai format email'
+            },
+            password: {
+              required: 'Password harus diisi'
+            }
+          },
+          errorClass:"text-danger",
+          submitHandler: function () {
+            $.ajax({
+              url: "/api/signin",
+              method:'POST',
+              type:'POST',
+              data: {
+                email: $('#email').val(),
+                password:$('#password').val()
+              },
+              dataType:'json',
+              success: function(res){
+                alert(res)
+                if (res)
+                  window.location="/dashboard";
+                else{
+                  swal({
+                    title: 'Gagal',
+                    text: 'Pengguna tidak terdaftar',
+                    icon: 'error'
+                  })
+                }
+              },
+              error: function(err) {
+                console.log(err);
+              }
+
+            });
+          }        
+        });
+    });
+    </script>
+
     <!-- endinject -->
     <!-- Plugin js for this page -->
     <!-- End plugin js for this page -->
