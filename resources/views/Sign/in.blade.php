@@ -33,10 +33,10 @@
               <form class="pt-3" method="post" action="/signin" id="form">
                 @csrf
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-lg" id="email" placeholder="Email" name="email" required>
+                  <input type="email" class="form-control form-control-lg" id="email" placeholder="email" name="email" required>
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control form-control-lg" id="password" placeholder="Password" name="password" required>
+                  <input type="password" class="form-control form-control-lg" id="password" placeholder="password" name="password" required>
                 </div>
                 <div class="mt-3">
                   <input type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn custom-btn" value="SIGN IN">
