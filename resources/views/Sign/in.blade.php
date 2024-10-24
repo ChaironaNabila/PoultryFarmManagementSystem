@@ -78,6 +78,7 @@
 
   <script>
     $(document).ready(function () {
+      
         $('#form').validate({
           rules: {
             email: {
