@@ -7,6 +7,9 @@ Route::get('/', function () {
     return view('sign.index');
 });
 
+Route::get('/dashboard', function () {
+    return view('dashboard.index');
+});
 // Route::get('/', [SignController::class, 'index'])->name('login');
 // Route::get('/logout', [SignController::class, 'logout'])->name('logout');
 // Route::post('/auth', [SignController::class, 'auth'])->name('auth');

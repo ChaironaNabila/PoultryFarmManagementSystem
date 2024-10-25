@@ -80,30 +80,47 @@ $(function() {
   };
   var doughnutPieData = {
     datasets: [{
-      data: [30, 40, 30],
+      data: [80, 5, 15],
       backgroundColor: [
-        'rgba(255, 99, 132, 0.5)',
-        'rgba(54, 162, 235, 0.5)',
-        'rgba(255, 206, 86, 0.5)',
-        'rgba(75, 192, 192, 0.5)',
-        'rgba(153, 102, 255, 0.5)',
-        'rgba(255, 159, 64, 0.5)'
+        'rgba(56,166,62,1)',
+        'rgba(255,0,0,1)',
+        'rgba(230,255,0,1)',
       ],
       borderColor: [
-        'rgba(255,99,132,1)',
-        'rgba(54, 162, 235, 1)',
+        'rgba(5,133,4,1)',
+        'rgba(161,8,8,1)',
         'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
+        
       ],
     }],
 
     // These labels appear in the legend and in the tooltips when hovering different arcs
     labels: [
-      'Pink',
-      'Blue',
-      'Yellow',
+      'Sehat',
+      'Mati',
+      'Sakit',
+    ]
+  };
+  var doughnutPieData1 = {
+    datasets: [{
+      data: [90, 10],
+      backgroundColor: [
+        'rgba(56,166,62,1)',
+        
+        'rgba(230,255,0,1)',
+      ],
+      borderColor: [
+        'rgba(5,133,4,1)',
+        'rgba(255, 206, 86, 1)',
+        
+      ],
+    }],
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+    labels: [
+      'Tersedia',
+      'Keluar',
+      
     ]
   };
   var doughnutPieOptions = {
@@ -309,7 +326,7 @@ $(function() {
     var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
     var doughnutChart = new Chart(doughnutChartCanvas, {
       type: 'doughnut',
-      data: doughnutPieData,
+      data: doughnutPieData1,
       options: doughnutPieOptions
     });
   }
