@@ -26,6 +26,14 @@ Route::get('/kandang', function () {
 Route::get('/fkandang', function () {
     return view('kandang.form');
 });
+
+Route::get('/penyakit', function () {
+    return view('penyakit.index');
+});
+
+Route::get('/fpenyakit', function () {
+    return view('penyakit.form');
+});
 // Route::get('/', [SignController::class, 'index'])->name('login');
 // Route::get('/logout', [SignController::class, 'logout'])->name('logout');
 // Route::post('/auth', [SignController::class, 'auth'])->name('auth');
