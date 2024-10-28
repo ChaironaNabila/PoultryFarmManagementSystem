@@ -18,6 +18,14 @@ Route::get('/pakan', function () {
 Route::get('/fpakan', function () {
     return view('pakan.form');
 });
+
+Route::get('/kandang', function () {
+    return view('kandang.index');
+});
+
+Route::get('/fkandang', function () {
+    return view('kandang.form');
+});
 // Route::get('/', [SignController::class, 'index'])->name('login');
 // Route::get('/logout', [SignController::class, 'logout'])->name('logout');
 // Route::post('/auth', [SignController::class, 'auth'])->name('auth');
