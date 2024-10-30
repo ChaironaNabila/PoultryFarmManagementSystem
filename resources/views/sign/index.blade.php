@@ -110,7 +110,6 @@
               },
               dataType:'json',
               success: function(res){
-                // alert(res)
                 if (res)
                   window.location="{{ url('/dashboard') }}";
                 else{

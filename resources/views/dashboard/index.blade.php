@@ -43,7 +43,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{url ('/pakan')}}" aria-expanded="false" aria-controls="form-elements">
-              <i class="icon-columns menu-icon"></i>
+              <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Stok Pakan</span>
               <!-- <i class="menu-arrow"></i> -->
             </a>
@@ -54,8 +54,8 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link"  href="{{url ('/penyakit')}}" aria-expanded="false" aria-controls="form-elements">
-              <i class="icon-columns menu-icon"></i>
+            <a class="nav-link" href="{{url ('/penyakit')}}" aria-expanded="false" aria-controls="form-elements">
+              <i class="icon-contract menu-icon"></i>
               <span class="menu-title">Penyakit</span>
               <!-- <i class="menu-arrow"></i> -->
             </a>
