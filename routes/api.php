@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\KandangController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 
-
+Route::apiResource('kandangs', KandangController::class);
 
 Route::group(['middleware'=>['web']], function (){
     Route::post('/signin', function (Request $request) {

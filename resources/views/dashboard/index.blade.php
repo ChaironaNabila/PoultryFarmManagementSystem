@@ -73,7 +73,7 @@
           <div class="row">
             <div class="grid-margin">
               <div class="row">
-                <h3 class="font-weight-bold">Welcome '{{session('name')}}'</h3>
+                <h3 class="font-weight-bold">Welcome {{session('name')}}</h3>
               </div>
             </div>
           </div>
