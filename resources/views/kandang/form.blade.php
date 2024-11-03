@@ -71,7 +71,7 @@
           <div class="row">
             <div class="grid-margin">
               <div class="row">
-                <h3 class="font-weight-bold">Kandang '{{session('name')}}'</h3>
+                <h3 class="font-weight-bold">Kandang {{session('name')}}</h3>
               </div>
             </div>
           </div>
@@ -79,40 +79,41 @@
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Form Kandang</h4>
-                  <form class="forms-sample">
+                  <form id="formkandang" >
+                  @csrf
                     <div class="form-group">
                       <label for="exampleInputName1">Kode Kandang</label>
-                      <input type="text" class="form-control" id="exampleInputName1" placeholder="Name">
+                      <input type="text" class="form-control" id="kode_kandang" name="kode_kandang"placeholder="Kode Kandang">
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputEmail3">Jumlah Unggas</label>
-                      <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+                      <label for="exampleInputEmail3">Jenis Unggas</label>
+                      <input type="text" class="form-control" id="jenis_unggas" name="jenis_unggas" placeholder="Jenis Unggas">
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword4">Kode Unggas</label>
-                      <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password">
+                      <label for="exampleInputPassword4">Jumlah Unggas</label>
+                      <input type="text" class="form-control" id="jumlah_unggas"  name="jumlah_unggas" placeholder="Jumlah Unggas">
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    <div class="form-group">
+                      <label for="exampleInputPassword4">Tanggal Masuk</label>
+                      <input type="tezt" class="form-control" id="tanggal_masuk" name="tanggal_masuk" placeholder="Tanggal Masuk">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword4">Tanggal Keluar</label>
+                      <input type="text" class="form-control" id="tanggal_keluar" name="tanggal_keluar" placeholder="Tanggal Keluar">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword4">Status</label>
+                      <input type="text" class="form-control" id="status" name="status" placeholder="Status">
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2" >Submit</button>
                     <button class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
             </div>
         </div>
-
-
         <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-          </div>
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
-          </div>
-        </footer> 
-        <!-- partial -->
+        
       </div>
       <!-- main-panel ends -->
     </div>   
@@ -122,6 +123,10 @@
 
   <!-- plugins:js -->
   <script src="vendors/js/vendor.bundle.base.js"></script>
+  <script src="/vendors/jquery-3.7.1.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/jquery.validate.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/additional-methods.min.js"></script>
+  <script src="/vendors/sweetalert/sweetalert.min.js"></script>
   <!-- endinject -->
   <!-- Plugin js for this page -->
   <script src="vendors/chart.js/Chart.min.js"></script>
@@ -130,6 +135,100 @@
   <script src="js/dataTables.select.min.js"></script>
 
   <!-- End plugin js for this page -->
+
+  <script>
+  $(document).ready(function () {
+        $('#formkandang').validate({
+          debug: true,
+          rules: {
+            kode_kandang: {
+              required: true,
+            },
+            jenis_unggas: {
+              required: true
+            },
+            jumlah_unggas: {
+              required: true
+            },
+            tanggal_masuk: {
+              required: true
+            },
+            tanggal_keluar: {
+              required: true
+            },
+            status: {
+              required: true
+            }
+          },
+          messages: {
+            kode_kandang: {
+              required: 'Kode harus diisi',
+            },
+            jenis_unggas: {
+              required: 'Jenis harus diisi'
+            },
+            jumlah_unggas: {
+              required: 'Jumlah harus diisi'
+            },
+            tanggal_masuk: {
+              required: 'TanggaL Masuk harus diisi'
+            },
+            tanggal_keluar: {
+              required: 'Tanggal Keluar harus diisi'
+            },
+            status: {
+              required: 'Status harus diisi'
+            }
+          },
+          errorClass:"text-danger",
+          submitHandler: function (form, event) { // Tambahkan parameter form dan event
+            event.preventDefault();
+            $.ajax({
+              url: "{{ url('/api/kandangs') }}",
+              method:'POST',
+              type:'POST',
+              data: {
+                kode_kandang: $('#kode_kandang').val(),
+                jenis_unggas:$('#jenis_unggas').val(),
+                jumlah_unggas:$('#jumlah_unggas').val(),
+                tanggal_masuk:$('#tanggal_masuk').val(),
+                tanggal_keluar:$('#tanggal_keluar').val(),
+                status:$('#status').val(),
+                _token: '{{csrf_token()}}'
+              },
+              dataType:'json',
+              success: function(res){
+                if (res)
+                swal({
+                    title: 'berhasil',
+                    text: 'Penambahan berhasil',
+                    icon: 'success'
+                  }).then(()=>{
+                    window.location="{{ url('/kandang') }}";
+                  });
+                  
+                else{
+                  swal({
+                    title: 'Gagal',
+                    text: 'Penambahan gagal',
+                    icon: 'error'
+                  });
+                }
+              },
+              error: function(err) {
+                console.log(err);
+                swal({
+                    title: 'Gagal',
+                    text: err.responseJSON.message,
+                    icon: 'error'
+                  });
+              }
+
+            });
+          }        
+        });
+    });        
+  </script>
   <!-- inject:js -->
   <script src="js/off-canvas.js"></script>
   <script src="js/hoverable-collapse.js"></script>

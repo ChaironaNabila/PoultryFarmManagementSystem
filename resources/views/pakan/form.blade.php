@@ -80,19 +80,23 @@
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Form Pakan</h4>
-                  
-                  <form class="forms-sample">
+                  <form id="formpakan">
+                    @csrf
                     <div class="form-group">
                       <label for="exampleInputName1">Nama Pakan</label>
-                      <input type="text" class="form-control" id="exampleInputName1" placeholder="Name">
+                      <input type="text" class="form-control" id="nama_pakan" name="nama_pakan" placeholder="Name">
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail3">Jenis Pakan</label>
-                      <input type="text" class="form-control" id="exampleInputEmail3" placeholder="Jenis">
+                      <input type="text" class="form-control" id="jenis_pakan" name="jenis_pakan" placeholder="Jenis">
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword4">Stok Pakan</label>
-                      <input type="text" class="form-control" id="exampleInputPassword4" placeholder="Dalam kg">
+                      <input type="text" class="form-control" id="stok_pakan" name="stok_pakan" placeholder="Dalam kg">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword4">Tanggal Diperbarui</label>
+                      <input type="text" class="form-control" id="tanggal_diperbarui"  name="tanggal_diperbarui" placeholder="Tanggal diperbarui">
                     </div>
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
                     <button class="btn btn-light">Cancel</button>
@@ -104,17 +108,7 @@
 
 
         <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-          </div>
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
-          </div>
-        </footer> 
-        <!-- partial -->
+        
       </div>
       <!-- main-panel ends -->
     </div>   
@@ -124,12 +118,94 @@
 
   <!-- plugins:js -->
   <script src="vendors/js/vendor.bundle.base.js"></script>
+  <script src="/vendors/jquery-3.7.1.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/jquery.validate.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/additional-methods.min.js"></script>
+  <script src="/vendors/sweetalert/sweetalert.min.js"></script>
   <!-- endinject -->
   <!-- Plugin js for this page -->
   <script src="vendors/chart.js/Chart.min.js"></script>
   <script src="vendors/datatables.net/jquery.dataTables.js"></script>
   <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
   <script src="js/dataTables.select.min.js"></script>
+
+  <script>
+  $(document).ready(function () {
+        $('#formpakan').validate({
+          rules: {
+            nama_pakan: {
+              required: true,
+            },
+            jenis_pakan: {
+              required: true
+            },
+            stok_pakan: {
+              required: true
+            },
+            tanggal_diperbarui: {
+              required: true
+            }
+          },
+          messages: {
+            nama_pakan: {
+              required: 'Nama Pakan harus diisi',
+            },
+            jenis_pakan: {
+              required: 'Jenis Pakan harus diisi'
+            },
+            stok_pakan: {
+              required: 'Stok Pakan harus diisi'
+            },
+            tanggal_diperbarui: {
+              required: 'Tanggal Diperbarui harus diisi'
+            }
+          },
+          errorClass:"text-danger",
+          submitHandler: function () {
+            $.ajax({
+              url: "{{ url('/api/pakans') }}",
+              method:'POST',
+              type:'POST',
+              data: {
+                nama_pakan: $('#nama_pakan').val(),
+                jenis_pakan:$('#jenis_pakan').val(),
+                stok_pakan:$('#stok_pakan').val(),
+                tanggal_diperbarui:$('#tanggal_diperbarui').val(),
+                _token: '{{csrf_token()}}'
+              },
+              dataType:'json',
+              success: function(res){
+                if (res)
+                swal({
+                    title: 'Berhasil',
+                    text: 'Pakan berhasil ditambahkan',
+                    icon: 'success'
+                  }).then(()=>{
+                    window.location="{{ url('/pakan') }}";
+                  });
+                  
+                else{
+                  swal({
+                    title: 'Gagal',
+                    text: 'Penambahan gagal',
+                    icon: 'error'
+                  });
+                }
+              },
+              error: function(err) {
+                console.log(err);
+                swal({
+                    title: 'Gagal',
+                    text: err.responseJSON.message,
+                    icon: 'error'
+                  });
+              }
+
+            });
+          }        
+        });
+    });        
+  </script>
 
   <!-- End plugin js for this page -->
   <!-- inject:js -->

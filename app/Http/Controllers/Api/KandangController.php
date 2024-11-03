@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\KandangResource;
 use App\Models\Kandang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class KandangController extends Controller
@@ -17,14 +18,11 @@ class KandangController extends Controller
         if($kandangs-> count() > 0 )
         {
             return KandangResource::collection($kandangs);
-
         }
         else
         {
-            return response()->json(['message'=>'No Record Available'], 200);
-
+            return response()->json(['message'=>'Tidak ada data kandang'], 200);
         }
-
     }
 
     public function store(Request $request) {
@@ -33,7 +31,8 @@ class KandangController extends Controller
             'jenis_unggas' => 'required|string',
             'jumlah_unggas' => 'required|integer',
             'tanggal_masuk' => 'required|date',
-            'tanggal_keluar' => 'required|date'
+            'tanggal_keluar' => 'nullable|date',
+            'status'=> 'required|string'
         
         ]);
         if($validator->fails()){
@@ -44,12 +43,17 @@ class KandangController extends Controller
 
         }
 
+        // $tanggal_masuk = Carbon::createFromFormat('d/m/Y', $request->tanggal_masuk)->format('Y-m-d');
+        // $tanggal_keluar = $request->tanggal_keluar ? Carbon::createFromFormat('d/m/Y', $request->tanggal_keluar)->format('Y-m-d') : null;
+
         $kandang = Kandang::create([
             'kode_kandang' => $request->kode_kandang,
             'jenis_unggas' => $request->jenis_unggas,
             'jumlah_unggas' => $request->jumlah_unggas,
             'tanggal_masuk' => $request->tanggal_masuk,
-            'tanggal_keluar' => $request->tanggal_keluar
+            'tanggal_keluar' => $request->tanggal_keluar,
+            'status'=> $request->status
+
         ]);
 
         return response()->json([
@@ -72,7 +76,9 @@ class KandangController extends Controller
             'jenis_unggas' => 'required|string',
             'jumlah_unggas' => 'required|integer',
             'tanggal_masuk' => 'required|date',
-            'tanggal_keluar' => 'required|date'
+            'tanggal_keluar' => 'required|date',
+            'status'=> 'required|string'
+
         
         ]);
         if($validator->fails()){
@@ -88,7 +94,9 @@ class KandangController extends Controller
             'jenis_unggas' => $request->jenis_unggas,
             'jumlah_unggas' => $request->jumlah_unggas,
             'tanggal_masuk' => $request->tanggal_masuk,
-            'tanggal_keluar' => $request->tanggal_keluar
+            'tanggal_keluar' => $request->tanggal_keluar,
+            'status'=> $request->status
+
         ]);
 
         return response()->json([

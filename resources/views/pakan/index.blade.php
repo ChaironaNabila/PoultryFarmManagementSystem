@@ -106,38 +106,6 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td id="kode">
-                            CP 513
-                          </td>
-                          <td id="jenis">
-                            Jagung
-                          </td>
-                          <td id="jumlah">
-                            20 Kg
-                          </td>
-                          <td  type="date">
-                            1 Januari 2024
-                          </td>
-                          <td >
-                          </td>
-                        </tr>
-                        <tr>
-                          <td id="kode">
-                            CP 513
-                          </td>
-                          <td id="jenis">
-                            Jagung
-                          </td>
-                          <td id="jumlah">
-                            20 Kg
-                          </td>
-                          <td  type="date">
-                            1 Januari 2024
-                          </td>
-                          <td >
-                          </td>
-                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -147,16 +115,7 @@
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-          </div>
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
-          </div>
-        </footer> 
-        <!-- partial -->
+        
       </div>
       <!-- main-panel ends -->
     </div>   
@@ -166,6 +125,48 @@
 
   <!-- plugins:js -->
   <script src="vendors/js/vendor.bundle.base.js"></script>
+  <script src="/vendors/jquery-3.7.1.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/jquery.validate.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/additional-methods.min.js"></script>
+  <script src="/vendors/sweetalert/sweetalert.min.js"></script>
+  <!-- endinject -->
+
+  <script>
+  $(document).ready(function() {
+    $.ajax({
+        url: '/api/pakans', // Ganti dengan URL API Anda
+        method: 'GET',
+        success: function(response) {
+            if (response.data.length > 0) {
+                response.data.forEach(function(pakan) {
+                    $('tbody').append(`
+                        <tr>
+                            <td>${pakan.nama_pakan}</td>
+                            <td>${pakan.jenis_pakan}</td>
+                            <td>${pakan.stok_pakan}</td>
+                            <td>${pakan.tanggal_diperbarui}</td>
+                        </tr>
+                    `);
+                });
+            } else {
+                $('tbody').append(`
+                    <tr>
+                        <td colspan="6" class="text-center">${response.message}</td>
+                    </tr>
+                `);
+            }
+        },
+        error: function(xhr) {
+            console.error('Error fetching data:', xhr);
+            $('tbody').append(`
+                <tr>
+                    <td colspan="6" class="text-center">Error loading data</td>
+                </tr>
+            `);
+        }
+    });
+  });
+</script>
   <!-- endinject -->
   <!-- Plugin js for this page -->
   <script src="vendors/chart.js/Chart.min.js"></script>

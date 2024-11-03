@@ -9,7 +9,7 @@ class Kandang extends Model
 {
     use HasFactory;
     
-    public $timestamps = false;
+    // public $timestamps = false;
 
     protected $table = 'kandangs';
 
@@ -18,6 +18,7 @@ class Kandang extends Model
         'jenis_unggas',
         'jumlah_unggas',
         'tanggal_masuk',
-        'tanggal_keluar'
+        'tanggal_keluar',
+        'status'
     ];
 }

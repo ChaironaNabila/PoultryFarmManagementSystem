@@ -84,7 +84,7 @@
                   <div class="card border border-warning" style="width: 120px; height: 80px;">
                     <div class="card-body">
                       <p >Total Telur</p>
-                      <p class="fs-15">4006</p>
+                      <p class="fs-15">0</p>
                     </div>
                   </div>
                 </div>

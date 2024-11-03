@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\Api\KandangController;
+use App\Http\Controllers\Api\PakanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 
 Route::apiResource('kandangs', KandangController::class);
+Route::apiResource('pakans', PakanController::class);
+
 
 Route::group(['middleware'=>['web']], function (){
     Route::post('/signin', function (Request $request) {
