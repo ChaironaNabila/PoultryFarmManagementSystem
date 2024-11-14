@@ -96,6 +96,7 @@
                       <input type="text" class="form-control" id="status" name="status" placeholder="Status">
                     </div>
                     <button type="submit" class="btn btn-primary mr-2" >Submit</button>
+                    <button type="submit" class="btn btn-primary mr-2" >Submit</button>
                     <button class="btn btn-light">Cancel</button>
                   </form>
                 </div>
@@ -103,6 +104,7 @@
             </div>
         </div>
         <!-- content-wrapper ends -->
+        
         
       </div>
       <!-- main-panel ends -->
@@ -113,6 +115,10 @@
 
   <!-- plugins:js -->
   <script src="vendors/js/vendor.bundle.base.js"></script>
+  <script src="/vendors/jquery-3.7.1.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/jquery.validate.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/additional-methods.min.js"></script>
+  <script src="/vendors/sweetalert/sweetalert.min.js"></script>
   <script src="/vendors/jquery-3.7.1.min.js"></script>
   <script src="/vendors/jquery-validation-1.19.5/jquery.validate.min.js"></script>
   <script src="/vendors/jquery-validation-1.19.5/additional-methods.min.js"></script>

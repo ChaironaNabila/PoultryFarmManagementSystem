@@ -101,6 +101,7 @@
         </div>
         <!-- content-wrapper ends -->
         
+        
       </div>
       <!-- main-panel ends -->
     </div>   
@@ -114,12 +115,94 @@
   <script src="/vendors/jquery-validation-1.19.5/jquery.validate.min.js"></script>
   <script src="/vendors/jquery-validation-1.19.5/additional-methods.min.js"></script>
   <script src="/vendors/sweetalert/sweetalert.min.js"></script>
+  <script src="/vendors/jquery-3.7.1.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/jquery.validate.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/additional-methods.min.js"></script>
+  <script src="/vendors/sweetalert/sweetalert.min.js"></script>
   <!-- endinject -->
   <!-- Plugin js for this page -->
   <script src="vendors/chart.js/Chart.min.js"></script>
   <script src="vendors/datatables.net/jquery.dataTables.js"></script>
   <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
   <script src="js/dataTables.select.min.js"></script>
+
+  <script>
+  $(document).ready(function () {
+        $('#formpakan').validate({
+          rules: {
+            nama_pakan: {
+              required: true,
+            },
+            jenis_pakan: {
+              required: true
+            },
+            stok_pakan: {
+              required: true
+            },
+            tanggal_diperbarui: {
+              required: true
+            }
+          },
+          messages: {
+            nama_pakan: {
+              required: 'Nama Pakan harus diisi',
+            },
+            jenis_pakan: {
+              required: 'Jenis Pakan harus diisi'
+            },
+            stok_pakan: {
+              required: 'Stok Pakan harus diisi'
+            },
+            tanggal_diperbarui: {
+              required: 'Tanggal Diperbarui harus diisi'
+            }
+          },
+          errorClass:"text-danger",
+          submitHandler: function () {
+            $.ajax({
+              url: "{{ url('/api/pakans') }}",
+              method:'POST',
+              type:'POST',
+              data: {
+                nama_pakan: $('#nama_pakan').val(),
+                jenis_pakan:$('#jenis_pakan').val(),
+                stok_pakan:$('#stok_pakan').val(),
+                tanggal_diperbarui:$('#tanggal_diperbarui').val(),
+                _token: '{{csrf_token()}}'
+              },
+              dataType:'json',
+              success: function(res){
+                if (res)
+                swal({
+                    title: 'Berhasil',
+                    text: 'Pakan berhasil ditambahkan',
+                    icon: 'success'
+                  }).then(()=>{
+                    window.location="{{ url('/pakan') }}";
+                  });
+                  
+                else{
+                  swal({
+                    title: 'Gagal',
+                    text: 'Penambahan gagal',
+                    icon: 'error'
+                  });
+                }
+              },
+              error: function(err) {
+                console.log(err);
+                swal({
+                    title: 'Gagal',
+                    text: err.responseJSON.message,
+                    icon: 'error'
+                  });
+              }
+
+            });
+          }        
+        });
+    });        
+  </script>
 
   <!-- End plugin js for this page -->
 
