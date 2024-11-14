@@ -9,10 +9,16 @@ class Kandang extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'kode',
         'jenis',
         'jumlah',
         'status'
     ];
+
+    public function isActive()
+    {
+        return $this->deactivated_at === null;
+    }
 }
