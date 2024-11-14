@@ -5,6 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
   <title>Dashboard</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="vendors/feather/feather.css">
@@ -20,6 +21,7 @@
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
+  
 </head>
 <body>
   <!-- <div class="container-scroller">     -->
@@ -36,7 +38,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link"  href="{{url ('/kandang')}}" aria-expanded="false" aria-controls="kandangdropdown">
+            <a class="nav-link" href="{{url ('/kandang')}}" aria-expanded="false" aria-controls="kandangdropdown">
               <i class="icon-columns menu-icon"></i>
               <span class="menu-title">Kandang</span>
               <!-- <i class="menu-arrow"></i> -->
@@ -48,11 +50,11 @@
               </ul>
             </div> -->
           </li>
-          
           <li class="nav-item">
             <a class="nav-link" href="{{url ('/pakan')}}" aria-expanded="false" aria-controls="form-elements">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Stok Pakan</span>
+              <!-- <i class="menu-arrow"></i> -->
             </a>
           </li>
           <li class="nav-item">
@@ -64,7 +66,7 @@
             <div class="collapse" id="penyakitdropdown">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link"  href="{{url ('/penyakit')}}">Data Penyakit</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{url ('/laporanp')}}" >Laporan</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{url ('/lpenyakit')}}" >Laporan</a></li>
               </ul>
             </div>
           </li>
@@ -79,73 +81,45 @@
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          <div class="row">
-            <div class="grid-margin">
-              <div class="row">
-                <h3 class="font-weight-bold">Welcome {{session('name')}}</h3>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="grid-margin ">
-              <div class="row">
-                <div class="col-md-3" style="margin-right: 20px;" >
-                  <div class="card border border-warning" style="width: 120px; height: 80px;">
-                    <div class="card-body">
-                      <p >Total Telur</p>
-                      <p class="fs-15">0</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3"  style="margin-right: 20px;">
-                  <div class="card border border-warning" style="width: 150px; height: 80px;">
-                    <div class="card-body">
-                      <p >Produksi Telur</p>
-                      <p class="fs-15 ">61344</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3" style="margin-left: 40px;">
-                  <div class="card border border-warning"style="width: 120px; height: 80px;">
-                    <div class="card-body">
-                      <p>Stok Pakan</p>
-                      <p class="fs-15 mb-2"></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
+    
+          <div class="col-lg-30 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Grafik Kondisi Unggas</h4>
-                  <canvas id="pieChart"></canvas>
+                  <h4 class="card-title">Laporan Penyakit</h4>
+            
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>
+                            Kode Kandang
+                          </th>
+                          <th>
+                            Nama
+                          </th>
+                          <th>
+                            Nama Penyakit
+                          </th>
+                          <th>
+                            Jumlah Unggas
+                          </th>
+                          <th>
+                            Waktu Muncul Gejala 
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Grafik Stok Pakan</h4>
-                  <canvas id="doughnutChart"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
+        
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-          </div>
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
-          </div>
-        </footer> 
+       
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
@@ -156,7 +130,10 @@
 
   <!-- plugins:js -->
   <script src="vendors/js/vendor.bundle.base.js"></script>
-  <!-- endinject -->
+  <script src="/vendors/jquery-3.7.1.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/jquery.validate.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/additional-methods.min.js"></script>
+  <script src="/vendors/sweetalert/sweetalert.min.js"></script>  <!-- endinject -->
   <!-- Plugin js for this page -->
   <script src="vendors/chart.js/Chart.min.js"></script>
   <script src="vendors/datatables.net/jquery.dataTables.js"></script>
@@ -178,6 +155,7 @@
   <script src="js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
 </body>
+
 
 </html>
 

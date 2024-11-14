@@ -1,21 +1,41 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KandangController;
+use App\Http\Controllers\PakanController;
+use App\Http\Controllers\PenyakitController;
+use App\Http\Controllers\AccessRequestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
+use App\Http\Middleware\RoleMiddleware;
 
 
+Route::post('/check-email', [AuthController::class, 'checkEmail'])->name('checkEmail');
+Route::post('/register', [AuthController::class, 'register'])->name('api.register');
+Route::post('/login', [AuthController::class, 'login'])->middleware('guest')->name('api.login');
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('api.logout');
 
-Route::group(['middleware'=>['web']], function (){
-    Route::post('/signin', function (Request $request) {
-        $response= User::where('email', $request->input('email'))
-                        ->where ('password', md5 ($request->input('password')))
-                        ->get();
-        if (count ($response)) {
-            $request->session()->put('name', $response [0]->name);
-        }
-        return count ($response);
-    });
-
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/penyakit', [PenyakitController::class, 'index'])->name('api.penyakit.index');
+    Route::get('/penyakit/{id}', [PenyakitController::class, 'show'])->name('api.penyakit.show');
+    Route::put('/penyakit/{id}', [PenyakitController::class, 'update'])->name('api.penyakit.edit');
+    Route::post('/penyakit', [PenyakitController::class, 'create'])->name('api.penyakit.create');
+    Route::delete('/penyakit/{id}', [PenyakitController::class, 'delete'])->name('api.penyakit.delete');
 });
 
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/pakan', [PakanController::class, 'index'])->name('api.pakan.index');
+    Route::get('/pakan/{id}', [PakanController::class, 'show'])->name('api.pakan.show');
+    Route::put('/pakan/{id}', [PakanController::class, 'update'])->name('api.pakan.edit');
+    Route::post('/pakan', [PakanController::class, 'create'])->name('api.pakan.create');
+    Route::delete('/pakan/{id}', [PakanController::class, 'destroy'])->name('api.pakan.delete');
+});
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/kandang', [KandangController::class, 'index'])->name('api.kandang.index');
+    Route::get('/kandang/{id}', [KandangController::class, 'show'])->name('api.kandang.show');
+    Route::put('/kandang/{id}', [KandangController::class, 'update'])->name('api.kandang.edit');
+    Route::post('/kandang', [KandangController::class, 'create'])->name('api.kandang.create');
+    Route::delete('/kandang/{id}', [KandangController::class, 'delete'])->name('api.kandang.delete');
+});

@@ -30,10 +30,10 @@
               </div>
               <h4>Hello! let's get started</h4>
               <h6 class="font-weight-light">Sign in to continue.</h6>
-              <form class="pt-3" method="post" action="/signin" id="form">
+              <form class="pt-3"  id="loginform">
                 @csrf
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-lg" id="email" placeholder="Email" name="email" required>
+                  <input type="identifier" class="form-control form-control-lg" id="identifier" placeholder="Email atau Username" name="identifier" required>
                 </div>
                 <div class="form-group">
                   <input type="password" class="form-control form-control-lg" id="password" placeholder="Password" name="password" required>
@@ -75,65 +75,47 @@
   <script src="/vendors/sweetalert/sweetalert.min.js"></script>
 
   <!-- End plugin js for this page -->
-
   <script>
     $(document).ready(function () {
-        $('#form').validate({
-          rules: {
-            email: {
-              required: true,
-              email: true
-            },
-            password: {
-              required: true
-            }
-          },
-          messages: {
-            email: {
-              required: 'Email harus diisi',
-              email: 'Harus sesuai format email'
-            },
-            password: {
-              required: 'Password harus diisi'
-            }
-          },
-          errorClass:"text-danger",
-          submitHandler: function () {
-            $.ajax({
-              url: "{{ url('/api/signin') }}",
-              method:'POST',
-              type:'POST',
-              data: {
-                email: $('#email').val(),
-                password:$('#password').val(),
-                _token: '{{csrf_token()}}'
-              },
-              dataType:'json',
-              success: function(res){
-                if (res)
-                  window.location="{{ url('/dashboard') }}";
-                else{
-                  swal({
-                    title: 'Gagal',
-                    text: 'Pengguna tidak terdaftar',
-                    icon: 'error'
-                  });
-                }
-              },
-              error: function(err) {
-                console.log(err);
-                swal({
-                    title: 'Gagal',
-                    text: err.responseJSON.message,
-                    icon: 'error'
-                  });
-              }
+        $('#loginform').on('submit', function (event) {
+            event.preventDefault();
 
+            const identifier = $('#identifier').val();
+            const password = $('#password').val();
+
+            $.ajax({
+                url: "{{ url('/api/login') }}",
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json', // Tambahkan ini
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify({
+                    identifier: identifier,
+                    password: password,
+                    _token: '{{csrf_token()}}'
+                }),
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status === 200) {
+                        localStorage.setItem('token', response.data.token);
+                        localStorage.setItem('user_data', JSON.stringify(response.data.user));
+                        window.location.href = "{{ url('/dashboard') }}";
+                    } else {
+                        alert('Login gagal: ' + response.message);
+                    }
+                },
+                error: function (xhr) {
+                    const errorMessage = xhr.responseJSON && xhr.responseJSON.message 
+                        ? xhr.responseJSON.message 
+                        : 'Terjadi kesalahan, periksa kredensial Anda.';
+                    alert('Error: ' + errorMessage);
+                }
             });
-          }        
         });
     });
-  </script>
+</script>
+
 
   <!-- Plugin js for this page -->
   <!-- inject:js -->

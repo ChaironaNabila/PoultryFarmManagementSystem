@@ -35,8 +35,8 @@
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{url ('/kandang')}}" aria-expanded="false" aria-controls="form-elements">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{url ('/kandang')}}" aria-expanded="false" aria-controls="kandangdropdown">
               <i class="icon-columns menu-icon"></i>
               <span class="menu-title">Kandang</span>
             </a>
@@ -45,76 +45,62 @@
             <a class="nav-link" href="{{url ('/pakan')}}" aria-expanded="false" aria-controls="form-elements">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Stok Pakan</span>
-              <!-- <i class="menu-arrow"></i> -->
             </a>
             <div class="collapse" id="form-elements">
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#penyakitdropdown" aria-expanded="false" aria-controls="penyakitdropdown">
+              <i class="icon-contract menu-icon"></i>
+              <span class="menu-title">Penyakit</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="penyakitdropdown">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Basic Elements</a></li>
+                <li class="nav-item"> <a class="nav-link"  href="{{url ('/penyakit')}}">Data Penyakit</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{url ('/laporanp')}}" >Laporan</a></li>
               </ul>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link"  href="{{url ('/penyakit')}}" aria-expanded="false" aria-controls="form-elements">
-              <i class="icon-contract menu-icon"></i>
-              <span class="menu-title">Penyakit</span>
+            <a class="nav-link" href="{{url ('/laphar')}}" aria-expanded="false" aria-controls="form-elements">
+              <i class="icon-paper menu-icon"></i>
+              <span class="menu-title">Laporan Harian</span>
             </a>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Basic Elements</a></li>
-              </ul>
-            </div>
           </li>
         </ul>
       </nav>
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          <div class="row">
-            <div class="grid-margin">
-              <div class="row">
-                <h3 class="font-weight-bold">Pakan '{{session('name')}}'</h3>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 grid-margin stretch-card">
+          <div class="col-30 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Form Pakan</h4>
-                  
-                  <form class="forms-sample">
+                  <form id="formpakan" >
+                  @csrf
                     <div class="form-group">
-                      <label for="exampleInputName1">Nama Pakan</label>
-                      <input type="text" class="form-control" id="exampleInputName1" placeholder="Name">
+                      <label for="nama">Nama Pakan</label>
+                      <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Pakan">
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputEmail3">Jenis Pakan</label>
-                      <input type="text" class="form-control" id="exampleInputEmail3" placeholder="Jenis">
+                      <label for="jenis">Jenis Pakan</label>
+                      <input type="text" class="form-control" id="jenis" name="jenis" placeholder="Jenis Pakan">
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword4">Stok Pakan</label>
-                      <input type="text" class="form-control" id="exampleInputPassword4" placeholder="Dalam kg">
+                      <label for="stok">Stok Pakan</label>
+                      <input type="text" class="form-control" id="stok"  name="stok" placeholder="Stok Pakan">
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+            
+                    <button type="submit" class="btn btn-primary mr-2" >Submit</button>
                     <button class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
             </div>
         </div>
-
-
         <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-          </div>
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
-          </div>
-        </footer> 
-        <!-- partial -->
+        
       </div>
       <!-- main-panel ends -->
     </div>   
@@ -124,6 +110,10 @@
 
   <!-- plugins:js -->
   <script src="vendors/js/vendor.bundle.base.js"></script>
+  <script src="/vendors/jquery-3.7.1.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/jquery.validate.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/additional-methods.min.js"></script>
+  <script src="/vendors/sweetalert/sweetalert.min.js"></script>
   <!-- endinject -->
   <!-- Plugin js for this page -->
   <script src="vendors/chart.js/Chart.min.js"></script>
@@ -132,6 +122,90 @@
   <script src="js/dataTables.select.min.js"></script>
 
   <!-- End plugin js for this page -->
+
+  <script>
+  $(document).ready(function () {
+    
+        $('#formpakan').validate({
+          rules: {
+            nama: {
+              required: true,
+            },
+            jenis: {
+              required: true
+            },
+            stok: {
+              required: true
+            }
+          },
+          messages: {
+            nama: {
+              required: 'Nama Pakan harus diisi',
+            },
+            jenis: {
+              required: 'Jenis Pakan harus diisi'
+            },
+            stok: {
+              required: 'Stok Pakan harus diisi'
+            }
+          },
+          errorClass:"text-danger",
+          submitHandler: function () {
+            const token = localStorage.getItem('token');
+            console.log("Token di localStorage:", localStorage.getItem('token'));
+
+            if (!token) {
+                console.error("Token tidak ditemukan. Pastikan Anda sudah login.");
+                return;
+            }
+
+            $.ajax({
+              url: "{{ url('/api/pakan') }}",
+              method:'POST',
+              type:'POST',
+              headers: {
+            'Authorization': 'Bearer ' + token 
+        },
+              data: {
+                nama: $('#nama').val(),
+                jenis:$('#jenis').val(),
+                stok:$('#stok').val(),
+                _token: '{{csrf_token()}}'
+              },
+              dataType:'json',
+              success: function(res){
+                if (res)
+                swal({
+                    title: 'berhasil',
+                    text: 'Penambahan berhasil',
+                    icon: 'success'
+                  }).then(()=>{
+                    window.location="{{ url('/pakan') }}";
+                  });
+                  
+                else{
+                  swal({
+                    title: 'Gagal',
+                    text: 'Penambahan gagal',
+                    icon: 'error'
+                  });
+                }
+              },
+              error: function(err) {
+                console.log(err);
+                swal({
+                    title: 'Gagal',
+                    text: err.responseJSON.message,
+                    icon: 'error'
+                  });
+              }
+
+            });
+          }        
+        });
+    }); 
+           
+  </script>
   <!-- inject:js -->
   <script src="js/off-canvas.js"></script>
   <script src="js/hoverable-collapse.js"></script>

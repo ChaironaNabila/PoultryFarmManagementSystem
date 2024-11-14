@@ -21,6 +21,7 @@
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
 </head>
+
 <body>
   <!-- <div class="container-scroller">     -->
     <div class="page-body-wrapper" style="margin: 0; padding: 0;">
@@ -36,7 +37,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{url ('/kandang')}}" aria-expanded="false" aria-controls="form-elements">
+            <a class="nav-link" href="{{url ('/kandang')}}"aria-expanded="false" aria-controls="kandangdropdown">
               <i class="icon-columns menu-icon"></i>
               <span class="menu-title">Kandang</span>
             </a>
@@ -45,7 +46,6 @@
             <a class="nav-link" href="{{url ('/pakan')}}" aria-expanded="false" aria-controls="form-elements">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Stok Pakan</span>
-              <!-- <i class="menu-arrow"></i> -->
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
@@ -54,30 +54,30 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link"  href="{{url ('/penyakit')}}" aria-expanded="false" aria-controls="form-elements">
+            <a class="nav-link" data-toggle="collapse" href="#penyakitdropdown" aria-expanded="false" aria-controls="penyakitdropdown">
               <i class="icon-contract menu-icon"></i>
               <span class="menu-title">Penyakit</span>
-              <!-- <i class="menu-arrow"></i> -->
+              <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="form-elements">
+            <div class="collapse" id="penyakitdropdown">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Basic Elements</a></li>
+                <li class="nav-item"> <a class="nav-link"  href="{{url ('/penyakit')}}">Data Penyakit</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{url ('/laporanp')}}" >Laporan</a></li>
               </ul>
             </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url ('/laphar')}}" aria-expanded="false" aria-controls="form-elements">
+              <i class="icon-paper menu-icon"></i>
+              <span class="menu-title">Laporan Harian</span>
+            </a>
           </li>
         </ul>
       </nav>
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          <div class="row">
-            <div class="grid-margin">
-              <div class="row">
-                <h3 class="font-weight-bold">Pakan '{{session('name')}}'</h3>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-12 grid-margin stretch-card">
+          <div class="col-lg-30 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Data Pakan</h4>
@@ -101,43 +101,11 @@
                             Tanggal Diperbarui
                           </th>
                           <th>
-                            Aksi 
+                            Aksi
                           </th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td id="kode">
-                            CP 513
-                          </td>
-                          <td id="jenis">
-                            Jagung
-                          </td>
-                          <td id="jumlah">
-                            20 Kg
-                          </td>
-                          <td  type="date">
-                            1 Januari 2024
-                          </td>
-                          <td >
-                          </td>
-                        </tr>
-                        <tr>
-                          <td id="kode">
-                            CP 513
-                          </td>
-                          <td id="jenis">
-                            Jagung
-                          </td>
-                          <td id="jumlah">
-                            20 Kg
-                          </td>
-                          <td  type="date">
-                            1 Januari 2024
-                          </td>
-                          <td >
-                          </td>
-                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -145,17 +113,44 @@
               </div>
             </div>
         </div>
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Edit Pakan</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="editForm">
+            @csrf
+            <div class="form-group">
+              <label for="nama">Nama Pakan</label>
+              <input type="text" class="form-control" id="edit_nama" name="nama">
+            </div>
+            <div class="form-group">
+              <label for="jenis">Jenis Pakan</label>
+              <input type="text" class="form-control" id="edit_jenis" name="jenis">
+            </div>
+            <div class="form-group">
+              <label for="stok">Stok Pakan</label>
+              <input type="text" class="form-control" id="edit_stok" name="stok">
+            </div>
+          </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="saveChanges">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-          </div>
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
-          </div>
-        </footer> 
+        
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
@@ -166,7 +161,183 @@
 
   <!-- plugins:js -->
   <script src="vendors/js/vendor.bundle.base.js"></script>
+  <script src="/vendors/jquery-3.7.1.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/jquery.validate.min.js"></script>
+  <script src="/vendors/jquery-validation-1.19.5/additional-methods.min.js"></script>
+  <script src="/vendors/sweetalert/sweetalert.min.js"></script>
   <!-- endinject -->
+
+  <script>
+
+  $(document).ready(function() {
+    // Ambil token dari localStorage
+    const token = localStorage.getItem('token');
+    console.log("Token di localStorage:", localStorage.getItem('token'));
+
+    if (!token) {
+        console.error("Token tidak ditemukan. Pastikan Anda sudah login.");
+        return;
+    }
+
+    $.ajax({
+        url: '/api/pakan', // Sesuaikan dengan URL API
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token // Pastikan token dikirim dengan benar
+        },
+        success: function(response) {
+            if (response.status === 200 && response.data.length > 0) {
+                response.data.forEach(function(pakan) {
+                    $('tbody').append(`
+                        <tr>
+                            <td>${pakan.nama}</td>
+                            <td>${pakan.jenis}</td>
+                            <td>${pakan.stok} ekor</td>
+                            <td>${pakan.updated_at}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary btn-edit" data-id="${pakan.id}">Edit</button>
+                                <button class="btn btn-sm btn-danger btn-delete" data-id="${pakan.id}">Hapus</button>
+
+                            </td>
+                        </tr>
+                    `);
+                });
+
+            $(document).ready(function() {
+          // Event listener untuk tombol Edit
+
+          $(document).on('click', '.btn-edit', function() {
+            const editId = $(this).data('id'); // Ambil ID dari tombol Edit yang diklik
+            $('#editModal').data('id', editId); // Simpan ID ke dalam modal
+
+            // Panggil API untuk mendapatkan data pakan
+            $.ajax({
+                url: `/api/pakan/${editId}`,
+                method: 'GET',
+                headers: {
+                  'Authorization': 'Bearer ' + token // Pastikan token dikirim dengan benar
+              },
+                success: function(response) {
+                    if (response.data) {
+                        $('#edit_nama').val(response.data.nama);
+                        $('#edit_jenis').val(response.data.jenis);
+                        $('#edit_stok').val(response.data.stok);
+
+                        // Tampilkan modal 
+                        const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+                        editModal.show();
+                    }
+                },
+                error: function(xhr) {
+                    console.error('Gagal mengambil data:', xhr);
+                }
+            });
+          });
+
+    // Event listener untuk tombol Save Changes di modal
+    $('#saveChanges').on('click', function() {
+              // Ambil editId dari data modal
+              const editId = $('#editModal').data('id'); 
+
+              // Data yang akan dikirim ke server
+              const data = {
+                  nama: $('#edit_nama').val(),
+                  jenis: $('#edit_jenis').val(),
+                  stok: $('#edit_stok').val(),
+                  _token: '{{csrf_token()}}'
+              };
+
+              // Mengirim data ke API untuk disimpan
+              $.ajax({
+                  url: `/api/pakan/${editId}`,
+                  method: 'PUT',
+                  data: data,
+                  headers: {
+                  'Authorization': 'Bearer ' + token // Pastikan token dikirim dengan benar
+              },
+                  success: function(response) {
+                      if (response.message) {
+                        swal({
+                          title: 'Berhasil',
+                          text: 'Pakan berhasil diperbarui',
+                          icon: 'success'
+                        }).then(()=>{
+                          location.reload();
+                        });
+
+                          // Update tampilan tabel tanpa reload
+                          $(`button[data-id="${editId}"]`).closest('tr').find('td:eq(0)').text(data.nama);
+                          $(`button[data-id="${editId}"]`).closest('tr').find('td:eq(1)').text(data.jenis);
+                          $(`button[data-id="${editId}"]`).closest('tr').find('td:eq(2)').text(data.stok);
+                      } else {
+                          alert('Gagal menyimpan perubahan');
+                      }
+                  },
+                  error: function(xhr) {
+                      console.error('Terjadi kesalahan saat menyimpan perubahan:', xhr);
+                      alert('Terjadi kesalahan saat menyimpan perubahan');
+                  }
+              });
+
+          });
+        });
+        
+            // Event listener for delete button
+            $('.btn-delete').on('click', function() {
+          const id = $(this).data('id');
+          if (confirm('Anda yakin ingin menghapus data ini?')) {
+
+            const data2 = {
+                        _token: '{{csrf_token()}}'
+                    };
+              
+        $.ajax({
+            url: `/api/pakan/${id}`, // URL API untuk delete
+            method: 'DELETE',
+            
+            data: data2,
+            headers: {
+                'Authorization': 'Bearer ' + token // Jangan lupa set token
+            },
+            success: function(deleteResponse) {
+                alert('Data berhasil dihapus');
+                location.reload(); // Refresh halaman setelah hapus
+            },
+            error: function(xhr) {
+                console.error('Error deleting data:', xhr);
+                alert('Gagal menghapus data');
+            }
+        });
+    }
+});
+
+
+
+            } else {
+                $('tbody').append(`
+                    <tr>
+                        <td colspan="6" class="text-center">Data tidak tersedia.</td>
+                    </tr>
+                `);
+            }
+        },
+
+        error: function(xhr) {
+            console.error('Error fetching data:', xhr);
+            $('tbody').append(`
+                <tr>
+                    <td colspan="6" class="text-center">Gagal memuat data</td>
+                </tr>
+            `);
+            if (xhr.status === 401) {
+                alert("Unauthorized: Anda harus login kembali.");
+                // Redirect ke halaman login jika perlu
+                window.location.href = '/login';
+            }
+        }
+    });
+  });
+  </script>
   <!-- Plugin js for this page -->
   <script src="vendors/chart.js/Chart.min.js"></script>
   <script src="vendors/datatables.net/jquery.dataTables.js"></script>
