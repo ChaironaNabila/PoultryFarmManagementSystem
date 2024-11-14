@@ -73,7 +73,7 @@
           <div class="row">
             <div class="grid-margin">
               <div class="row">
-                <h3 class="font-weight-bold">Welcome '{{session('name')}}'</h3>
+                <h3 class="font-weight-bold">Welcome {{session('name')}}</h3>
               </div>
             </div>
           </div>
@@ -84,7 +84,7 @@
                   <div class="card border border-warning" style="width: 120px; height: 80px;">
                     <div class="card-body">
                       <p >Total Telur</p>
-                      <p class="fs-15">4006</p>
+                      <p class="fs-15">0</p>
                     </div>
                   </div>
                 </div>

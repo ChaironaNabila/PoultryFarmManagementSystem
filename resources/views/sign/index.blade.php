@@ -30,7 +30,7 @@
               </div>
               <h4>Hello! let's get started</h4>
               <h6 class="font-weight-light">Sign in to continue.</h6>
-              <form class="pt-3" method="post" action="/signin" id="form">
+              <form class="pt-3" id="form">
                 @csrf
                 <div class="form-group">
                   <input type="email" class="form-control form-control-lg" id="email" placeholder="Email" name="email" required>
