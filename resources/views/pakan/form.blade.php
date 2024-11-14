@@ -84,14 +84,13 @@
                       <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Pakan">
                     </div>
                     <div class="form-group">
-                      <label for="jenis">Jenis Pakan</label>
                       <input type="text" class="form-control" id="jenis" name="jenis" placeholder="Jenis Pakan">
                     </div>
                     <div class="form-group">
                       <label for="stok">Stok Pakan</label>
                       <input type="text" class="form-control" id="stok"  name="stok" placeholder="Stok Pakan">
                     </div>
-            
+                    
                     <button type="submit" class="btn btn-primary mr-2" >Submit</button>
                     <button class="btn btn-light">Cancel</button>
                   </form>
@@ -126,84 +125,6 @@
   <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
   <script src="js/dataTables.select.min.js"></script>
 
-  <script>
-  $(document).ready(function () {
-        $('#formpakan').validate({
-          rules: {
-            nama_pakan: {
-              required: true,
-            },
-            jenis_pakan: {
-              required: true
-            },
-            stok_pakan: {
-              required: true
-            },
-            tanggal_diperbarui: {
-              required: true
-            }
-          },
-          messages: {
-            nama_pakan: {
-              required: 'Nama Pakan harus diisi',
-            },
-            jenis_pakan: {
-              required: 'Jenis Pakan harus diisi'
-            },
-            stok_pakan: {
-              required: 'Stok Pakan harus diisi'
-            },
-            tanggal_diperbarui: {
-              required: 'Tanggal Diperbarui harus diisi'
-            }
-          },
-          errorClass:"text-danger",
-          submitHandler: function () {
-            $.ajax({
-              url: "{{ url('/api/pakans') }}",
-              method:'POST',
-              type:'POST',
-              data: {
-                nama_pakan: $('#nama_pakan').val(),
-                jenis_pakan:$('#jenis_pakan').val(),
-                stok_pakan:$('#stok_pakan').val(),
-                tanggal_diperbarui:$('#tanggal_diperbarui').val(),
-                _token: '{{csrf_token()}}'
-              },
-              dataType:'json',
-              success: function(res){
-                if (res)
-                swal({
-                    title: 'Berhasil',
-                    text: 'Pakan berhasil ditambahkan',
-                    icon: 'success'
-                  }).then(()=>{
-                    window.location="{{ url('/pakan') }}";
-                  });
-                  
-                else{
-                  swal({
-                    title: 'Gagal',
-                    text: 'Penambahan gagal',
-                    icon: 'error'
-                  });
-                }
-              },
-              error: function(err) {
-                console.log(err);
-                swal({
-                    title: 'Gagal',
-                    text: err.responseJSON.message,
-                    icon: 'error'
-                  });
-              }
-
-            });
-          }        
-        });
-    });        
-  </script>
-
   <!-- End plugin js for this page -->
 
   <script>
@@ -219,7 +140,8 @@
             },
             stok: {
               required: true
-            }
+            },
+            
           },
           messages: {
             nama: {
@@ -230,7 +152,8 @@
             },
             stok: {
               required: 'Stok Pakan harus diisi'
-            }
+            },
+           
           },
           errorClass:"text-danger",
           submitHandler: function () {
@@ -260,7 +183,7 @@
                 if (res)
                 swal({
                     title: 'berhasil',
-                    text: 'Penambahan berhasil',
+                    text: 'Pakan berhasil berhasil',
                     icon: 'success'
                   }).then(()=>{
                     window.location="{{ url('/pakan') }}";
