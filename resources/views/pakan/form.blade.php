@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Dashboard</title>
+  <title>Poultrease</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="vendors/feather/feather.css">
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
@@ -35,13 +35,13 @@
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          <li class="nav-item active">
+          <li class="nav-item ">
             <a class="nav-link" href="{{url ('/kandang')}}" aria-expanded="false" aria-controls="kandangdropdown">
               <i class="icon-columns menu-icon"></i>
               <span class="menu-title">Kandang</span>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="{{url ('/pakan')}}" aria-expanded="false" aria-controls="form-elements">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Stok Pakan</span>
@@ -50,22 +50,21 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#penyakitdropdown" aria-expanded="false" aria-controls="penyakitdropdown">
+            <a class="nav-link"  href="/penyakit" aria-expanded="false" aria-controls="penyakitdropdown">
               <i class="icon-contract menu-icon"></i>
               <span class="menu-title">Penyakit</span>
-              <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="penyakitdropdown">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link"  href="{{url ('/penyakit')}}">Data Penyakit</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{url ('/laporanp')}}" >Laporan</a></li>
-              </ul>
-            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{url ('/laphar')}}" aria-expanded="false" aria-controls="form-elements">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Laporan Harian</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  id="logout-button" href="#" aria-expanded="false" aria-controls="form-elements">
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">Log Out</span>
             </a>
           </li>
         </ul>
@@ -84,6 +83,7 @@
                       <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Pakan">
                     </div>
                     <div class="form-group">
+                    <label for="jenis">Jenis Pakan</label>
                       <input type="text" class="form-control" id="jenis" name="jenis" placeholder="Jenis Pakan">
                     </div>
                     <div class="form-group">
@@ -129,6 +129,13 @@
 
   <script>
   $(document).ready(function () {
+    const token = sessionStorage.getItem('token');
+            console.log("Token di localStorage:", sessionStorage.getItem('token'));
+
+            if (!token) {
+                console.error("Token tidak ditemukan. Pastikan Anda sudah login.");
+                return;
+            }
     
         $('#formpakan').validate({
           rules: {
@@ -141,30 +148,23 @@
             stok: {
               required: true
             },
-            
+
           },
           messages: {
             nama: {
-              required: 'Nama Pakan harus diisi',
+              required: 'Kode harus diisi',
             },
             jenis: {
-              required: 'Jenis Pakan harus diisi'
+              required: 'Jenis harus diisi'
             },
             stok: {
-              required: 'Stok Pakan harus diisi'
+              required: 'Jumlah harus diisi'
             },
-           
+            
           },
           errorClass:"text-danger",
           submitHandler: function () {
-            const token = localStorage.getItem('token');
-            console.log("Token di localStorage:", localStorage.getItem('token'));
-
-            if (!token) {
-                console.error("Token tidak ditemukan. Pastikan Anda sudah login.");
-                return;
-            }
-
+            
             $.ajax({
               url: "{{ url('/api/pakan') }}",
               method:'POST',
@@ -183,7 +183,7 @@
                 if (res)
                 swal({
                     title: 'berhasil',
-                    text: 'Pakan berhasil berhasil',
+                    text: 'Pakan berhasil ditambahkan',
                     icon: 'success'
                   }).then(()=>{
                     window.location="{{ url('/pakan') }}";
@@ -210,6 +210,52 @@
           }        
         });
     }); 
+    $(document).ready(function() {
+    $('#logout-button').click(function(e) {
+        e.preventDefault(); // Menghindari refresh halaman
+        
+        // Menampilkan SweetAlert konfirmasi sebelum logout
+        swal({
+            title: "Are you sure?",
+            text: "You will be logged out from your account!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willLogout) => {
+            if (willLogout) {
+                // Melakukan request logout menggunakan AJAX
+                $.ajax({
+                    url: '/api/logout', // Endpoint API untuk logout
+                    type: 'POST',   // Pastikan Anda menggunakan metode POST
+                    headers: {
+                        'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Pastikan token ada jika Anda menggunakan Bearer Token
+                    },
+                    success: function(response) {
+                        // Menampilkan SweetAlert jika logout sukses
+                        swal({
+                            title: "Logged Out!",
+                            text: response.message,
+                            icon: "success",
+                        })
+                        .then(() => {
+                            // Redirect ke halaman login setelah logout berhasil
+                            window.location.href = '/login'; // Ganti dengan URL login Anda
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Menampilkan SweetAlert jika terjadi error
+                        swal({
+                            title: "Error!",
+                            text: "Something went wrong while logging out. Please try again.",
+                            icon: "error",
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
            
   </script>
   <!-- inject:js -->

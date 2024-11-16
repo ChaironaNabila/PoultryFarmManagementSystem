@@ -28,8 +28,8 @@
               <div class="brand-logo">
                 <img src="../../images/logo.png" alt="logo">
               </div>
-              <h4>Hello! let's get started</h4>
-              <h6 class="font-weight-light">Sign in to continue.</h6>
+              <h4>Halo, selamat datang ><</h4>
+              <h6 class="font-weight-light">Silahkan Sign In</h6>
               <form class="pt-3"  id="loginform">
                 @csrf
                 <div class="form-group">
@@ -41,23 +41,6 @@
                 <div class="mt-3">
                   <input type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" value="SIGN IN">
                 </div>
-                <!-- <div class="my-2 d-flex justify-content-between align-items-center">
-                  <div class="form-check">
-                    <label class="form-check-label text-muted">
-                      <input type="checkbox" class="form-check-input">
-                      Keep me signed in
-                    </label>
-                  </div>
-                  <a href="#" class="auth-link text-black">Forgot password?</a>
-                </div>
-                <div class="mb-2">
-                  <button type="button" class="btn btn-block btn-facebook auth-form-btn">
-                    <i class="ti-facebook mr-2"></i>Connect using facebook
-                  </button>
-                </div>-->
-                <!-- <div class="text-center mt-4 font-weight-light">
-                  Don't have an account? <a href="register.html" class="text-primary">Create</a>
-                </div>  -->
               </form>
             </div>
           </div>
@@ -77,6 +60,8 @@
   <!-- End plugin js for this page -->
   <script>
     $(document).ready(function () {
+          sessionStorage.clear();
+
         $('#loginform').on('submit', function (event) {
             event.preventDefault();
 
@@ -98,11 +83,16 @@
                 dataType: 'json',
                 success: function (response) {
                     if (response.status === 200) {
-                        localStorage.setItem('token', response.data.token);
-                        localStorage.setItem('user_data', JSON.stringify(response.data.user));
+                        sessionStorage.setItem('token', response.data.token);
+                        sessionStorage.setItem('user', JSON.stringify(response.data.user));
+                        console.log('Token yang disimpan:', sessionStorage.getItem('token'));
                         window.location.href = "{{ url('/dashboard') }}";
                     } else {
-                        alert('Login gagal: ' + response.message);
+                      swal({
+                            title: "Identitas tidak ditemukan!",
+                            text: "Masukkan username/email dan password yang benar",
+                            icon: "error",
+                        });
                     }
                 },
                 error: function (xhr) {

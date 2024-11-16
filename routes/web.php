@@ -15,6 +15,13 @@ Route::get('/login', function () {
     return view('sign.index');
 })->name('login');
 
+Route::get('/kandang', function () {
+    return view('kandang.index');
+});
+
+Route::get('/fkandang', function () {
+    return view('kandang.form');
+});
 
     Route::get('/dashboard', function () {
         return view('dashboard.index');
@@ -28,13 +35,11 @@ Route::get('/login', function () {
         return view('pakan.form');
     });
 
-    Route::get('/kandang', function () {
-        return view('kandang.index');
-    });
+    // Route::get('/kandang', function () {
+    //     return view('kandang.index');
+    // });
 
-    Route::get('/fkandang', function () {
-        return view('kandang.form');
-    });
+    
 
     Route::get('/penyakit', function () {
         return view('penyakit.index');
@@ -46,6 +51,10 @@ Route::get('/login', function () {
 
     Route::get('/lpenyakit', function () {
         return view('penyakit.laporan');
+    });
+
+    Route::get('/laphar', function () {
+        return view('laphar');
     });
 
 

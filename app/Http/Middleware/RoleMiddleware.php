@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use App\Models\Kandang;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
@@ -25,6 +26,12 @@ class RoleMiddleware
         if ($role && $user->role !== $role) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
+
+        Log::debug('User:', ['user' => $user]);
+
+        
         return $next($request);
     }
+
+    
 }

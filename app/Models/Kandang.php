@@ -12,9 +12,9 @@ class Kandang extends Model
 
     protected $fillable = [
         'kode',
-        'jenis',
-        'jumlah',
-        'status'
+        'jenis_unggas',
+        'jumlah_unggas',
+        'status',
     ];
 
     public function isActive()

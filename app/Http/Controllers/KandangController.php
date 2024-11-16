@@ -12,6 +12,7 @@ use PhpParser\Node\Expr\Cast\String_;
 
 class KandangController extends Controller
 {
+    
     public function index(Request $request)
     {
         if ($request->user()->role === 'admin') {
@@ -36,11 +37,13 @@ class KandangController extends Controller
             'kode' => 'required|string|max:255|unique:kandangs,kode',
             'jumlah_unggas' => 'required|integer|min:1',
             'jenis_unggas' => 'required|string',
-            'status' => 'required|in:aktif,tidak aktif',
         ]);
 
         // Set deactivated_at menjadi null saat membuat kandang baru
-        $kandang = Kandang::create(array_merge($request->all(), ['deactivated_at' => null]));
+        $kandang = Kandang::create(array_merge($request->all(), [
+            'deactivated_at' => null,
+            'status' => 'aktif'
+        ]));
 
         return response()->json([
             'status' => Response::HTTP_CREATED,
@@ -94,7 +97,7 @@ class KandangController extends Controller
 
         // Update deactivated_at jika status menjadi tidak aktif
         if ($request->status === 'tidak aktif') {
-            $kandang->deactivated_at = now();
+            $kandang->deactivated_at = now()->format('Y-m-d');
             $kandang->status = 'tidak aktif'; // Mengupdate status
         } else {
             $kandang->deactivated_at = null; // Reset jika diaktifkan kembali

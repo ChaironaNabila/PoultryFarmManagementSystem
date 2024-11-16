@@ -78,51 +78,51 @@ $(function() {
     }
 
   };
-  var doughnutPieData = {
-    datasets: [{
-      data: [80, 5, 15],
-      backgroundColor: [
-        'rgba(56,166,62,1)',
-        'rgba(255,0,0,1)',
-        'rgba(230,255,0,1)',
-      ],
-      borderColor: [
-        'rgba(5,133,4,1)',
-        'rgba(161,8,8,1)',
-        'rgba(255, 206, 86, 1)',
+  // var doughnutPieData = {
+  //   datasets: [{
+  //     data: [80, 5, 15],
+  //     backgroundColor: [
+  //       'rgba(56,166,62,1)',
+  //       'rgba(255,0,0,1)',
+  //       'rgba(230,255,0,1)',
+  //     ],
+  //     borderColor: [
+  //       'rgba(5,133,4,1)',
+  //       'rgba(161,8,8,1)',
+  //       'rgba(255, 206, 86, 1)',
         
-      ],
-    }],
+  //     ],
+  //   }],
 
-    // These labels appear in the legend and in the tooltips when hovering different arcs
-    labels: [
-      'Sehat',
-      'Mati',
-      'Sakit',
-    ]
-  };
-  var doughnutPieData1 = {
-    datasets: [{
-      data: [90, 10],
-      backgroundColor: [
-        'rgba(56,166,62,1)',
+  //   // These labels appear in the legend and in the tooltips when hovering different arcs
+  //   labels: [
+  //     'Sehat',
+  //     'Mati',
+  //     'Sakit',
+  //   ]
+  // };
+  // var doughnutPieData1 = {
+  //   datasets: [{
+  //     data: [90, 10],
+  //     backgroundColor: [
+  //       'rgba(56,166,62,1)',
         
-        'rgba(230,255,0,1)',
-      ],
-      borderColor: [
-        'rgba(5,133,4,1)',
-        'rgba(255, 206, 86, 1)',
+  //       'rgba(230,255,0,1)',
+  //     ],
+  //     borderColor: [
+  //       'rgba(5,133,4,1)',
+  //       'rgba(255, 206, 86, 1)',
         
-      ],
-    }],
+  //     ],
+  //   }],
 
-    // These labels appear in the legend and in the tooltips when hovering different arcs
-    labels: [
-      'Tersedia',
-      'Keluar',
+  //   // These labels appear in the legend and in the tooltips when hovering different arcs
+  //   labels: [
+  //     'Tersedia',
+  //     'Keluar',
       
-    ]
-  };
+  //   ]
+  // };
   var doughnutPieOptions = {
     responsive: true,
     animation: {

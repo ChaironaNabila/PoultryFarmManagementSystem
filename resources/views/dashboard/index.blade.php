@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Dashboard</title>
+  <title>Poultrease</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="vendors/feather/feather.css">
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
@@ -39,16 +39,7 @@
             <a class="nav-link"  href="{{url ('/kandang')}}" aria-expanded="false" aria-controls="kandangdropdown">
               <i class="icon-columns menu-icon"></i>
               <span class="menu-title">Kandang</span>
-              <!-- <i class="menu-arrow"></i> -->
             </a>
-            <!-- <div class="collapse" id="kandangdropdown">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link"  href="{{url ('/kandang')}}">Kandang</a></li>
-                <li class="nav-item"> <a class="nav-link" href="../../pages/ui-features/dropdowns.html">Izin Akses</a></li>
-              </ul>
-            </div> -->
-          </li>
-          
           <li class="nav-item">
             <a class="nav-link" href="{{url ('/pakan')}}" aria-expanded="false" aria-controls="form-elements">
               <i class="icon-paper menu-icon"></i>
@@ -56,22 +47,21 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#penyakitdropdown" aria-expanded="false" aria-controls="penyakitdropdown">
+            <a class="nav-link"  href="/penyakit" aria-expanded="false" aria-controls="penyakitdropdown">
               <i class="icon-contract menu-icon"></i>
               <span class="menu-title">Penyakit</span>
-              <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="penyakitdropdown">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link"  href="{{url ('/penyakit')}}">Data Penyakit</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{url ('/laporanp')}}" >Laporan</a></li>
-              </ul>
-            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{url ('/laphar')}}" aria-expanded="false" aria-controls="form-elements">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Laporan Harian</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  id="logout-button" href="#" aria-expanded="false" aria-controls="form-elements">
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">Log Out</span>
             </a>
           </li>
         </ul>
@@ -82,34 +72,26 @@
           <div class="row">
             <div class="grid-margin">
               <div class="row">
-                <h3 class="font-weight-bold">Welcome {{session('name')}}</h3>
+                <h3 class="font-weight-bold">Selamat Datang {{session('name')}}</h3>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="grid-margin ">
               <div class="row">
-                <div class="col-md-3" style="margin-right: 20px;" >
+                <div class="col-md-4" style="margin-right: 20px;" >
                   <div class="card border border-warning" style="width: 120px; height: 80px;">
                     <div class="card-body">
                       <p >Total Telur</p>
-                      <p class="fs-15">0</p>
+                      <p class="fs-15" id="total_telur"></p>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-3"  style="margin-right: 20px;">
+                <div class="col-md-4"  style="margin-right: 20px;">
                   <div class="card border border-warning" style="width: 150px; height: 80px;">
                     <div class="card-body">
                       <p >Produksi Telur</p>
-                      <p class="fs-15 ">61344</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3" style="margin-left: 40px;">
-                  <div class="card border border-warning"style="width: 120px; height: 80px;">
-                    <div class="card-body">
-                      <p>Stok Pakan</p>
-                      <p class="fs-15 mb-2"></p>
+                      <p class="fs-15 " id="produksi_telur"></p>
                     </div>
                   </div>
                 </div>
@@ -133,19 +115,60 @@
                 </div>
               </div>
             </div>
+            <!-- <div class="main-panel"> -->
+              <div class="content-wrapper">
+                <div class="col-lg-50 " style="max-width: 1200px; margin: 0 auto;">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Laporan Harian</h4>
+                        <div class="table-responsive">
+                          <table class="table table-striped">
+                            <thead>
+                              <tr>
+                                <th>
+                                  Kandang
+                                </th>
+                                <th>
+                                  Pengirim
+                                </th>
+                                <th>
+                                  Jenis Pakan
+                                </th>
+                                <th>
+                                  Nama Pakan
+                                </th>
+                                <th>
+                                  Bobot  
+                                </th>
+                                <th>
+                                  Telur 
+                                </th>
+                                <th>
+                                  Sakit 
+                                </th>
+                                <th>
+                                  Penyakit
+                                </th>
+                                <th>
+                                  Kematian
+                                </th>
+                                <th>
+                                  Tanggal Laporan
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
           </div>
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-          </div>
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
-          </div>
-        </footer> 
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
@@ -156,6 +179,8 @@
 
   <!-- plugins:js -->
   <script src="vendors/js/vendor.bundle.base.js"></script>
+  <script src="/vendors/sweetalert/sweetalert.min.js"></script>
+
   <!-- endinject -->
   <!-- Plugin js for this page -->
   <script src="vendors/chart.js/Chart.min.js"></script>
@@ -164,6 +189,204 @@
   <script src="js/dataTables.select.min.js"></script>
 
   <!-- End plugin js for this page -->
+  <script>
+    $(document).ready(function() {
+    const token = sessionStorage.getItem('token');
+    console.log('Token:', token); // Pastikan token ada
+    // sessionStorage.clear();
+
+    if (!token) {
+    console.error("Token tidak ditemukan. Pastikan Anda sudah login.");
+    return window.location.href = '/login';;
+    }
+
+    $.ajax({
+    url: 'api/admin/dashboard',
+    method: 'GET',
+    headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+    },
+    success: function (response) {
+        if (response.status === 200) {
+            const data = response.data;
+            console.log("datanya:", data);
+
+            $('#total_telur').text(data.total_telur + "butir");
+            updateTotalTelur(data.total_telur);
+            function updateTotalTelur(newTotalTelur) {
+            const currentTotalTelur = parseInt($('#total_telur').text()) || 0;
+            
+            // Cek apakah ada perubahan pada total telur
+            if (newTotalTelur !== currentTotalTelur) {
+                $('#total_telur').text(newTotalTelur + " butir");
+                
+                // Optionally, tampilkan animasi atau efek pada perubahan nilai
+                $('#total_telur').fadeOut(200, function () {
+                    $(this).fadeIn(200);
+                });
+            }
+            }
+
+            $('#produksi_telur').text(data.total_telur_per_hari + " butir/hari");
+            updateProduksiTelur(data.produksi_telur);
+
+            function updateProduksiTelur(newProduksiTelur) {
+              const currentProduksiTelur = parseInt($('#produksi_telur').text()) || 0;
+            if (newProduksiTelur !== currentProduksiTelur) {
+                $('#produksi_telur').text(newProduksiTelur );
+                
+                // Optionally, tampilkan animasi atau efek pada perubahan nilai
+                $('#produksi_telur').fadeOut(200, function () {
+                    $(this).fadeIn(200);
+                });
+            }
+            }
+
+            const ctx1 = document.getElementById('pieChart').getContext('2d');
+            const isZeroData = data.diagram_kesehatan.sehat === 0 && 
+                               data.diagram_kesehatan.sakit === 0 && 
+                               data.diagram_kesehatan.mati === 0;
+
+            const chartData = isZeroData ? [1, 0, 0] : [
+                data.diagram_kesehatan.sehat, 
+                data.diagram_kesehatan.sakit, 
+                data.diagram_kesehatan.mati
+            ];
+            const chartLabels = isZeroData 
+                  ? ['Belum Ada Data', '', '']
+                  : [
+                      `Sehat (${data.diagram_kesehatan.sehat})`, 
+                      `Sakit (${data.diagram_kesehatan.sakit})`, 
+                      `Mati (${data.diagram_kesehatan.mati})`
+                  ];
+            const chartBackgroundColors = isZeroData 
+                ? ['#e0e0e0', '#e0e0e0', '#e0e0e0']
+                : ['rgba(56,166,62,1)', 'rgba(255,0,0,1)', 'rgba(230,255,0,1)'];
+
+            new Chart(ctx1, {
+                type: 'pie',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        data: chartData,
+                        backgroundColor: chartBackgroundColors
+                    }]
+                }
+            });
+          
+            const ctx2 = document.getElementById('doughnutChart').getContext('2d');
+            const doughnutLabels = data.diagram_pakan.map(item => `${item.jenis} (${item.total_stok})`);
+            
+
+            new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: doughnutLabels,
+                    datasets: [{
+                        data: data.diagram_pakan.map(item => item.total_stok),
+                        backgroundColor: ['rgba(56,166,62,1)', 'rgba(255,0,0,1)', 'rgba(230,255,0,1)', 'rgba(390,255,0,1)']
+                    }]
+                }
+            });
+          }
+        }
+      });
+
+
+$.ajax({
+        url: '/api/laporan-harian', 
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token 
+        },
+        success: function(response) {
+            if (response.status === 200 && response.data.length > 0) {
+              let laporanData = response.data;
+              console.log("datanya:", laporanData);
+
+              let tableBody = $('tbody'); // Ganti dengan selector yang sesuai
+              laporanData.forEach(function(laporan) {
+                  let row = `<tr>
+                      <td>${laporan.kandang ? laporan.kandang.kode : 'Data Tidak Ada'}</td>
+                      <td>${laporan.user ? laporan.user.name : 'Data Tidak Ada'}</td>
+                      <td>${laporan.pakan ? laporan.pakan.nama: 'Data Tidak Ada'}</td>
+                      <td>${laporan.pakan ? laporan.pakan.jenis: 'Data Tidak Ada'}</td>
+                      <td>${laporan.jumlah_pakan} kg</td>
+                      <td>${laporan.telur} butir</td>
+                      <td>${laporan.jumlah_sakit} ekor</td>
+                      <td>${laporan.penyakit ? laporan.penyakit.nama : '-'}</td>
+                      <td>${laporan.kematian} ekor</td>
+                      <td>${laporan.created_at}</td>
+                  </tr>`;
+
+                  // Tambahkan row ke dalam tableBody
+                  tableBody.append(row);
+              });;
+            } 
+        },
+        error: function(xhr) {
+            console.error('Error fetching data:', xhr);
+            $('tbody').append(`
+                <tr>
+                    <td colspan="6" class="text-center">Gagal memuat data</td>
+                </tr>
+            `);
+            
+        }
+    });
+  
+      // Event listener untuk tombol log out
+      $(document).ready(function() {
+    $('#logout-button').click(function(e) {
+        e.preventDefault(); // Menghindari refresh halaman
+        
+        // Menampilkan SweetAlert konfirmasi sebelum logout
+        swal({
+            title: "Are you sure?",
+            text: "You will be logged out from your account!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willLogout) => {
+            if (willLogout) {
+                // Melakukan request logout menggunakan AJAX
+                $.ajax({
+                    url: '/api/logout', // Endpoint API untuk logout
+                    type: 'POST',   // Pastikan Anda menggunakan metode POST
+                    headers: {
+                        'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Pastikan token ada jika Anda menggunakan Bearer Token
+                    },
+                    success: function(response) {
+                        // Menampilkan SweetAlert jika logout sukses
+                        swal({
+                            title: "Logged Out!",
+                            text: response.message,
+                            icon: "success",
+                        })
+                        .then(() => {
+                            // Redirect ke halaman login setelah logout berhasil
+                            window.location.href = '/login'; // Ganti dengan URL login Anda
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Menampilkan SweetAlert jika terjadi error
+                        swal({
+                            title: "Error!",
+                            text: "Something went wrong while logging out. Please try again.",
+                            icon: "error",
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+
+  });
+</script>
+
+
   <!-- inject:js -->
   <script src="js/off-canvas.js"></script>
   <script src="js/hoverable-collapse.js"></script>
