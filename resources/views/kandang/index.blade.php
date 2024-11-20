@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
   <!-- endinject -->
   <!-- Plugin css for this page -->
-  <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+  <!-- <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css"> -->
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" type="text/css" href="js/select.dataTables.min.css">
   <!-- End plugin css for this page -->
@@ -155,11 +155,9 @@
         </div>
       </div>
     </div>
+<!-- content-wrapper ends -->
+<!-- partial:partials/_footer.html -->
 
-
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        
         
         <!-- partial -->
       </div>
@@ -171,13 +169,6 @@
 
   <!-- plugins:js -->
   <script src="vendors/js/vendor.bundle.base.js"></script>
-  <script src="/vendors/jquery-3.7.1.min.js"></script>
-  <script src="/vendors/jquery-validation-1.19.5/jquery.validate.min.js"></script>
-  <script src="/vendors/jquery-validation-1.19.5/additional-methods.min.js"></script>
-  <script src="/vendors/sweetalert/sweetalert.min.js"></script>
-  <script src="/vendors/jquery-3.7.1.min.js"></script>
-  <script src="/vendors/jquery-validation-1.19.5/jquery.validate.min.js"></script>
-  <script src="/vendors/jquery-validation-1.19.5/additional-methods.min.js"></script>
   <script src="/vendors/sweetalert/sweetalert.min.js"></script>
   <!-- endinject -->
 
@@ -186,39 +177,36 @@
     const token = sessionStorage.getItem('token');
     console.log("Token di localStorage:", sessionStorage.getItem('token'));
     
-
     if (!token) {
         console.error("Token tidak ditemukan. Pastikan Anda sudah login.");
         return window.location.href = '/login' ;
     }
 
-$.ajax({
-    url: '/kandang',
-    method: 'GET',
-    headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-    },
-    success: function(response) {
-        console.log('Halaman kandang berhasil dimuat');
-    },
-    error: function(xhr) {
-        console.log('Error:', xhr);
-    }
-});
+      $.ajax({
+          url: '/kandang',
+          method: 'GET',
+          headers: {
+              'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+          },
+          success: function(response) {
+              console.log('Halaman kandang berhasil dimuat');
+          },
+          error: function(xhr) {
+              console.log('Error:', xhr);
+          }
+      });
 
     $.ajax({
-        url: '/api/kandang', // Sesuaikan dengan URL API
+        url: '/api/kandang', 
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer ' + token // Pastikan token dikirim dengan benar
+            'Authorization': 'Bearer ' + token 
         },
         success: function(response) {
             if (response.status === 200 && response.data.length > 0) {
                 response.data.forEach(function(kandang) {
                   const createdAt = kandang.created_at ? new Date(kandang.created_at) : null;
                   const deactivatedAt = kandang.deactivated_at ? new Date(kandang.deactivated_at) : null;
-
-                  // Jika tanggal valid, format
                   const formattedCreatedAt = createdAt ? createdAt.toLocaleDateString('en-GB') : '-';
                   const formattedDeactivatedAt = deactivatedAt ? deactivatedAt.toLocaleDateString('en-GB') : '-';
                     $('tbody').append(`
@@ -240,37 +228,33 @@ $.ajax({
                     `);
                 });
 
-            $(document).ready(function() {
-          // Event listener untuk tombol Edit
+                $(document).ready(function() {
+                $(document).on('click', '.btn-edit', function() {
+                const editId = $(this).data('id'); 
+                $('#editModal').data('id', editId); 
 
-          $(document).on('click', '.btn-edit', function() {
-            const editId = $(this).data('id'); // Ambil ID dari tombol Edit yang diklik
-            $('#editModal').data('id', editId); // Simpan ID ke dalam modal
+                $.ajax({
+                    url: `/api/kandang/${editId}`,
+                    method: 'GET',
+                    headers: {
+                      'Authorization': 'Bearer ' + token 
+                  },
+                    success: function(response) {
+                        if (response.data) {
+                            $('#edit_kode').val(response.data.kode);
+                            $('#edit_jenis_unggas').val(response.data.jenis_unggas);
+                            $('#edit_jumlah_unggas').val(response.data.jumlah_unggas);
+                            $('#edit_status').val(response.data.status);
 
-            // Panggil API untuk mendapatkan data pakan
-            $.ajax({
-                url: `/api/kandang/${editId}`,
-                method: 'GET',
-                headers: {
-                  'Authorization': 'Bearer ' + token // Pastikan token dikirim dengan benar
-              },
-                success: function(response) {
-                    if (response.data) {
-                        $('#edit_kode').val(response.data.kode);
-                        $('#edit_jenis_unggas').val(response.data.jenis_unggas);
-                        $('#edit_jumlah_unggas').val(response.data.jumlah_unggas);
-                        $('#edit_status').val(response.data.status);
-
-                        // Tampilkan modal 
-                        const editModal = new bootstrap.Modal(document.getElementById('editModal'));
-                        editModal.show();
+                            const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+                            editModal.show();
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('Gagal mengambil data:', xhr);
                     }
-                },
-                error: function(xhr) {
-                    console.error('Gagal mengambil data:', xhr);
-                }
-            });
-          });
+                });
+                });
 
     // Event listener untuk tombol Save Changes di modal
           $('#saveChanges').on('click', function() {
@@ -286,14 +270,13 @@ $.ajax({
                   _token: '{{csrf_token()}}'
               };
 
-              // Mengirim data ke API untuk disimpan
               $.ajax({
                   url: `/api/kandang/${editId}`,
                   method: 'PUT',
                   data: data,
                   headers: {
-                  'Authorization': 'Bearer ' + token // Pastikan token dikirim dengan benar
-              },
+                  'Authorization': 'Bearer ' + token 
+                  },
                   success: function(response) {
                       if (response.message) {
                         swal({
@@ -304,7 +287,6 @@ $.ajax({
                           location.reload();
                         });
 
-                          // Update tampilan tabel tanpa reload
                           $(`button[data-id="${editId}"]`).closest('tr').find('td:eq(0)').text(data.kode);
                           $(`button[data-id="${editId}"]`).closest('tr').find('td:eq(1)').text(data.jenis_unggas);
                           $(`button[data-id="${editId}"]`).closest('tr').find('td:eq(2)').text(data.jumlah_unggas);
@@ -318,19 +300,17 @@ $.ajax({
                       alert('Terjadi kesalahan saat menyimpan perubahan');
                   }
               });
-
           });
         });
-            } else {
-                $('tbody').append(`
-                    <tr>
-                        <td colspan="6" class="text-center">Data tidak tersedia.</td>
-                    </tr>
-                `);
-            }
+      } else {
+          $('tbody').append(`
+              <tr>
+                  <td colspan="6" class="text-center">Data tidak tersedia.</td>
+              </tr>
+          `);
+      }
         },
 
-        
         error: function(xhr) {
             console.error('Error fetching data:', xhr);
             $('tbody').append(`
@@ -341,41 +321,36 @@ $.ajax({
         }
     });
   });
+  
   $(document).ready(function() {
-    $('#logout-button').click(function(e) {
-        e.preventDefault(); // Menghindari refresh halaman
-        
-        // Menampilkan SweetAlert konfirmasi sebelum logout
-        swal({
-            title: "Are you sure?",
-            text: "You will be logged out from your account!",
+      $('#logout-button').click(function(e) {
+        e.preventDefault(); 
+          swal({
+            title: "Kamu yakin?",
+            text: "Kamu akan keluar dari akun!",
             icon: "warning",
             buttons: true,
             dangerMode: true,
         })
         .then((willLogout) => {
             if (willLogout) {
-                // Melakukan request logout menggunakan AJAX
                 $.ajax({
-                    url: '/api/logout', // Endpoint API untuk logout
-                    type: 'POST',   // Pastikan Anda menggunakan metode POST
+                    url: '/api/logout', 
+                    type: 'POST',   
                     headers: {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Pastikan token ada jika Anda menggunakan Bearer Token
                     },
                     success: function(response) {
-                        // Menampilkan SweetAlert jika logout sukses
                         swal({
                             title: "Logged Out!",
                             text: response.message,
                             icon: "success",
                         })
                         .then(() => {
-                            // Redirect ke halaman login setelah logout berhasil
-                            window.location.href = '/login'; // Ganti dengan URL login Anda
+                            window.location.href = '/login'; 
                         });
                     },
                     error: function(xhr, status, error) {
-                        // Menampilkan SweetAlert jika terjadi error
                         swal({
                             title: "Error!",
                             text: "Something went wrong while logging out. Please try again.",
@@ -385,13 +360,164 @@ $.ajax({
                 });
             }
         });
-    });
+      });
+      });
+
+$(document).ready(function () {
+  // Inisialisasi DataTables dengan fitur Export
+  $('.table').DataTable({
+    processing: true,  
+    serverSide: true,
+    // Nonaktifkan fitur advanced table
+    searching: false,      // Nonaktifkan fitur pencarian
+        ordering: false,       // Nonaktifkan sorting kolom
+        paging: false,         // Nonaktifkan pagination
+        info: false, 
+    dom: "<'row'<'col-4'B>>rt<'row'<'col-6'p>>",
+    buttons: [
+      {
+        className: 'btn btn-danger btn-sm',
+        extend: 'pdfHtml5',
+        text: 'PDF',
+        title: 'Data Kandang',
+        orientation: 'landscape',
+        pageSize: 'A4',
+        exportOptions: {
+          columns: ':not(:last-child)',
+        },
+        customize: function (doc) {
+          doc.styles.tableHeader.alignment = 'center';
+          doc.styles.title = {
+            alignment: 'center',
+            fontSize: 18,
+            bold: true,
+          };
+          doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1)
+            .join('*')
+            .split('');
+        },
+      },
+      {
+        className: 'btn btn-success btn-sm',
+        extend: 'excelHtml5',
+        text: 'Excel',
+        title: 'Data Kandang',
+        exportOptions: {
+          columns: ':not(:last-child)',
+          format: {
+      body: function(data, row, column, node) {
+       if (data === null || data === undefined) {
+          return '';
+        }
+        if (typeof data === 'object') {
+          return JSON.stringify(data);
+        }
+        if (typeof data === 'number') {
+          return data.toString(); 
+        }
+        return data; 
+      }
+    }
+        },
+      },
+      {
+        className: 'btn btn-secondary btn-sm',
+        extend: 'print',
+        text: 'Print',
+        title: '<h4>Data Kandang</h4>',
+        exportOptions: {
+          columns: ':not(:last-child)',
+        },
+      },
+    ],
+    columns: [
+      { data: 'kode' },
+      { data: 'jenis_unggas' },
+      { data: 'jumlah_unggas' },
+      {
+      data: 'status',
+      render: function (data, type, row) {
+        // Gunakan badge dengan warna sesuai status
+        let badgeClass = data === 'aktif' ? 'badge-success' : 'badge-danger';
+        return `
+          <span class="badge ${badgeClass}">
+            ${data}
+          </span>
+        `;
+      },
+      title: 'Status' },
+      { data: 'created_at',
+        render: function (data) {
+      let date = new Date(data);
+      return date.toLocaleDateString('id-ID'); 
+    }
+       },
+      { data: 'deactivated_at',
+        render: function (data) {
+          if (data === null) {
+          return '-'; 
+    }
+          let date = new Date(data);
+          return date.toLocaleDateString('id-ID'); 
+        }
+       },
+       {data: null, 
+    render: function (data, type, row) {
+      return `
+        <button class="btn btn-sm btn-primary btn-edit" data-id="${row.id}">Edit</button>
+      `;
+    },
+    orderable: false, 
+    searchable: false}
+    ],
+    ajax: {
+      url: '/api/kandang', 
+      type: 'GET',
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+      },
+      
+      dataSrc: function (json) {
+        console.log('API Response:', json);  
+        return json.data;  
+      },
+      error: function (xhr, error, thrown) {
+        console.error('Error loading data:', xhr.responseText);
+        alert('Error loading data. Check console or API response.');
+      },
+    },
+    complete: function() {
+        table.processing(false);  
+      },
+    responsive: true,
+    // language: {
+    //   emptyTable: "Tidak ada data tersedia",
+    //   lengthMenu: "Tampilkan _MENU_ entri",
+    //   search: "Cari:",
+    //   paginate: {
+    //     first: "Pertama",
+    //     last: "Terakhir",
+    //     next: "Berikutnya",
+    //     previous: "Sebelumnya",
+    //   },
+    //   info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+    //   infoEmpty: "Tidak ada entri untuk ditampilkan",
+    // },
+  });
 });
+
   </script>
   <!-- Plugin js for this page -->
   <script src="vendors/chart.js/Chart.min.js"></script>
-  <script src="vendors/datatables.net/jquery.dataTables.js"></script>
-  <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+  <script src="/vendors/jquery-3.7.1.min.js"></script> 
+  <script src="/vendors/datatables.net/jquery.dataTables.js"></script>
+  <script src="/vendors/datatables.net/dataTables.buttons.js"></script>
+  <script src="/vendors/datatables.net/jszip.min.js"></script>
+  <script src="/vendors/datatables.net/pdfmake.min.js"></script>
+  <script src="/vendors/datatables.net/vfs_fonts.js"></script>
+  <script src="/vendors/datatables.net/buttons.html5.min.js"></script>
+  <script src="/vendors/datatables.net/buttons.print.min.js"></script>
+  <!-- <script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script> -->
   <script src="js/dataTables.select.min.js"></script>
 
   <!-- End plugin js for this page -->

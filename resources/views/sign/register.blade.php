@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
+  <title>Poultrease</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="../../vendors/feather/feather.css">
   <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
@@ -27,10 +27,10 @@
           <div class="col-lg-4 mx-auto">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
               <div class="brand-logo">
-                <img src="../../images/logo.svg" alt="logo">
+                <img src="../../images/logo.png" alt="logo">
               </div>
-              <h4>New here?</h4>
-              <h6 class="font-weight-light">Signing up is easy. It only takes a few steps</h6>
+              <h4>Baru join?</h4>
+              <h6 class="font-weight-light">Ayo daftar duluu</h6>
               <form class="pt-3" id="registform">
                 @csrf
                 <div class="form-group">
@@ -49,7 +49,7 @@
                   <input type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" value="SIGN IN">
                 </div>
                 <div class="text-center mt-4 font-weight-light">
-                  Already have an account? <a href="{{ url('/login') }}"class="text-primary">Login</a>
+                  Sudah punya akun? <a href="{{ url('/login') }}"class="text-primary">Login</a>
                 </div>
               </form>
             </div>
@@ -106,7 +106,7 @@
             errorClass: "text-danger",
             submitHandler: function () {
                 $.ajax({
-                    url: "{{ url('/api/register') }}",
+                    url: "{{ url('/api/registerAdmin') }}",
                     method: 'POST',
                     data: {
                         name: $('#name').val(),
@@ -123,7 +123,7 @@
                                 text: 'Registrasi berhasil',
                                 icon: 'success'
                             }).then(() => {
-                                window.location = "{{ url('/login') }}";
+                                window.location = "{{ url('/dashboard') }}";
                             });
                         } else {
                             swal({

@@ -195,7 +195,7 @@
                         <tr>
                             <td>${pakan.nama}</td>
                             <td>${pakan.jenis}</td>
-                            <td>${pakan.stok} ekor</td>
+                            <td>${pakan.stok} kg</td>
                             <td>${formattedCreatedAt}</td>
                             <td>
                                 <button class="btn btn-sm btn-primary btn-edit" data-id="${pakan.id}">Edit</button>
@@ -286,11 +286,18 @@
         });
         
             // Event listener for delete button
-            $('.btn-delete').on('click', function() {
-          const id = $(this).data('id');
-          if (confirm('Anda yakin ingin menghapus data ini?')) {
-
-            const data2 = {
+            $(document).on('click', '.btn-delete', function () {
+              const id = $(this).data('id');
+              swal({
+            title: "Apa kamu yakin menghapus pakan ini?",
+            text: "Data pakan akan hilang",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((deletedata) => {
+            if (deletedata) {
+                const data2 = {
                         _token: '{{csrf_token()}}'
                     };
               
@@ -302,20 +309,28 @@
             headers: {
                 'Authorization': 'Bearer ' + token // Jangan lupa set token
             },
-            success: function(deleteResponse) {
-                alert('Data berhasil dihapus');
-                location.reload(); // Refresh halaman setelah hapus
-            },
-            error: function(xhr) {
-                console.error('Error deleting data:', xhr);
-                alert('Gagal menghapus data');
+            success: function(res){
+                if (res)
+                swal({
+                    title: 'Berhasil',
+                    text: ' Pakan berhasil dihapus',
+                    icon: 'success'
+                  }).then(()=>{
+                    location.reload();
+                  });
+                  
+                else{
+                  swal({
+                    title: 'Gagal',
+                    text: 'Penambahan gagal',
+                    icon: 'error'
+                  });
+                }
+              },
+        });
             }
         });
-    }
 });
-
-
-
             } else {
                 $('tbody').append(`
                     <tr>
@@ -381,11 +396,155 @@
         });
     });
 });
+$(document).ready(function () {
+  // Inisialisasi DataTables dengan fitur Export
+  $('.table').DataTable({
+    
+    dom: "<'row'<'col-4'l><'col-4'B><'col-4'f>>rt<'row'<'col-6'i><'col-6'p>>",
+    buttons: [
+      {
+        className: 'btn btn-danger btn-sm',
+        extend: 'pdfHtml5',
+        text: 'PDF',
+        title: 'Data Laporan Harian',
+        orientation: 'landscape',
+        pageSize: 'A4',
+        exportOptions: {
+          columns: ':not(:last-child)',
+        },
+        customize: function (doc) {
+          doc.styles.tableHeader.alignment = 'center';
+          doc.styles.title = {
+            alignment: 'center',
+            fontSize: 18,
+            bold: true,
+          };
+          doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1)
+            .join('*')
+            .split('');
+        },
+      },
+      {
+        className: 'btn btn-success btn-sm',
+        extend: 'excelHtml5',
+        text: 'Excel',
+        title: 'Data Laporan Harian',
+        exportOptions: {
+    columns: ':not(:last-child)',
+    format: {
+      body: function(data, row, column, node) {
+        // Jika data adalah null atau undefined, ganti dengan string kosong
+        if (data === null || data === undefined) {
+          return '';
+        }
+        // Jika data berupa objek, ubah menjadi string
+        if (typeof data === 'object') {
+          return JSON.stringify(data);
+        }
+        // Jika data adalah angka, pastikan tetap dalam format angka
+        if (typeof data === 'number') {
+          return data.toString(); // Atau bisa disesuaikan jika ada format khusus
+        }
+        return data; // Mengembalikan data jika sudah valid
+      }
+    }
+  }
+      },
+      {
+        className: 'btn btn-secondary btn-sm',
+        extend: 'print',
+        text: 'Print',
+        title: 'Data Laporan Harian',
+        exportOptions: {
+          columns: ':not(:last-child)',
+        },
+      },
+    ],
+    columns: [
+      { data: 'kandang.kode', title: 'Kode Kandang' },
+      { data: 'user.name', title: 'Pengirim' },
+      { data: 'pakan.jenis', title: 'Jenis Pakan' },
+      { data: 'pakan.nama', title: 'Nama Pakan' },
+      { data: 'jumlah_pakan', title: 'Bobot' },
+      { data: 'telur', title: 'Telur' },
+      { data: 'jumlah_sakit', title: 'Sakit' },
+      { data: 'penyakit.nama', title: 'Penyakit', render: function (data) {
+          // Cek jika data null atau undefined, lalu ganti dengan string kosong atau default value
+          return data ? data : 'Data Tidak Tersedia';
+        }, },
+      { data: 'kematian', title: 'Kematian' },
+      { data: 'updated_at',
+        render: function (data) {
+      let date = new Date(data);
+      return date.toLocaleDateString('id-ID'); // Format tanggal sesuai lokal Indonesia
+    }
+       },
+    ],
+  
+    ajax: {
+      url: '/api/pakan', // Endpoint untuk data tabel
+      type: 'GET',
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+      },
+      
+      dataSrc: function (json) {
+        console.log('API Response:', json);  
+        return json.data;  
+      },
+      error: function (xhr, error, thrown) {
+        console.error('Error loading data:', xhr.responseText);
+        alert('Error loading data. Check console or API response.');
+      },
+      
+    },
+    columns: [
+    { data: 'nama', title: 'Nama Pakan' },
+    { data: 'jenis', title: 'Jenis Pakan' },
+    { data: 'stok', title: 'Stok Pakan' },
+    { 
+      data: 'updated_at',
+      render: function (data) {
+        let date = new Date(data);
+        return date.toLocaleDateString('id-ID'); // Format tanggal sesuai lokal Indonesia
+      }
+    },
+    {data: null, // Menggunakan data null untuk kolom aksi
+    render: function (data, type, row) {
+      return `
+        <button class="btn btn-sm btn-primary btn-edit" data-id="${row.id}">Edit</button>
+        <button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}">Hapus</button>      `;
+    },
+    orderable: false, 
+    searchable: false}
+  ],
+    responsive: true,
+    language: {
+      emptyTable: "Tidak ada data tersedia",
+      lengthMenu: "Tampilkan _MENU_ entri",
+      search: "Cari:",
+      paginate: {
+        first: "Pertama",
+        last: "Terakhir",
+        next: "Berikutnya",
+        previous: "Sebelumnya",
+      },
+      info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+      infoEmpty: "Tidak ada entri untuk ditampilkan",
+    },
+  });
+});
   </script>
   <!-- Plugin js for this page -->
   <script src="vendors/chart.js/Chart.min.js"></script>
-  <script src="vendors/datatables.net/jquery.dataTables.js"></script>
-  <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+  <script src="/vendors/datatables.net/jquery.dataTables.js"></script>
+  <script src="/vendors/datatables.net/jszip.min.js"></script>
+  <script src="/vendors/datatables.net/dataTables.buttons.js"></script>
+  <script src="/vendors/datatables.net/pdfmake.min.js"></script>
+  <script src="/vendors/datatables.net/vfs_fonts.js"></script>
+  <script src="/vendors/datatables.net/buttons.html5.min.js"></script>
+  <script src="/vendors/datatables.net/buttons.print.min.js"></script>
+  <script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
   <script src="js/dataTables.select.min.js"></script>
 
   <!-- End plugin js for this page -->

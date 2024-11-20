@@ -17,6 +17,8 @@ Route::post('/check-email', [AuthController::class, 'checkEmail'])->name('checkE
 Route::post('/register', [AuthController::class, 'register'])->name('api.register');
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest')->name('api.login');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('api.logout');
+Route::post('/registerAdmin', [AuthController::class, 'registerAdmin'])->name('api.register.admin');
+
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/penyakit', [PenyakitController::class, 'index'])->name('api.penyakit.index');

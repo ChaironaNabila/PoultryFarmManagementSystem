@@ -292,7 +292,7 @@ max-width: 200px; /* Sesuaikan lebar maksimum kolom sesuai keperluan */
                       if (response.message) {
                         swal({
                           title: 'Berhasil',
-                          text: 'Pakan berhasil diperbarui',
+                          text: 'Penyakit berhasil diperbarui',
                           icon: 'success'
                         }).then(()=>{
                           location.reload();
@@ -318,11 +318,18 @@ max-width: 200px; /* Sesuaikan lebar maksimum kolom sesuai keperluan */
         });
         
             // Event listener for delete button
-            $('.btn-delete').on('click', function() {
-          const id = $(this).data('id');
-          if (confirm('Anda yakin ingin menghapus data ini?')) {
-
-            const data2 = {
+            $(document).on('click', '.btn-delete', function () {
+              const id = $(this).data('id');
+              swal({
+            title: "Apa kamu yakin menghapus pakan ini?",
+            text: "Data penyakit akan hilang",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((deletedata) => {
+            if (deletedata) {
+                const data2 = {
                         _token: '{{csrf_token()}}'
                     };
               
@@ -334,16 +341,27 @@ max-width: 200px; /* Sesuaikan lebar maksimum kolom sesuai keperluan */
             headers: {
                 'Authorization': 'Bearer ' + token // Jangan lupa set token
             },
-            success: function(deleteResponse) {
-                alert('Data berhasil dihapus');
-                location.reload(); // Refresh halaman setelah hapus
-            },
-            error: function(xhr) {
-                console.error('Error deleting data:', xhr);
-                alert('Gagal menghapus data');
+            success: function(res){
+                if (res)
+                swal({
+                    title: 'Berhasil',
+                    text: ' Penyakit berhasil dihapus',
+                    icon: 'success'
+                  }).then(()=>{
+                    location.reload();
+                  });
+                  
+                else{
+                  swal({
+                    title: 'Gagal',
+                    text: 'Penambahan gagal',
+                    icon: 'error'
+                  });
+                }
+              },
+        });
             }
         });
-    }
 });
             } else {
                 $('tbody').append(`
@@ -415,6 +433,129 @@ max-width: 200px; /* Sesuaikan lebar maksimum kolom sesuai keperluan */
         });
     });
 });
+$(document).ready(function () {
+  // Inisialisasi DataTables dengan fitur Export
+  $('.table').DataTable({
+    
+    dom: "<'row'<'col-4'l><'col-4'B><'col-4'f>>rt<'row'<'col-6'i><'col-6'p>>",
+    buttons: [
+      {
+        className: 'btn btn-danger btn-sm',
+        extend: 'pdfHtml5',
+        text: 'PDF',
+        title: 'Data Laporan Harian',
+        orientation: 'landscape',
+        pageSize: 'A4',
+        exportOptions: {
+          columns: ':not(:last-child)',
+        },
+        customize: function (doc) {
+          doc.styles.tableHeader.alignment = 'center';
+          doc.styles.title = {
+            alignment: 'center',
+            fontSize: 18,
+            bold: true,
+          };
+          doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1)
+            .join('*')
+            .split('');
+        },
+      },
+      {
+        className: 'btn btn-success btn-sm',
+        extend: 'excelHtml5',
+        text: 'Excel',
+        title: 'Data Laporan Harian',
+        exportOptions: {
+    columns: ':not(:last-child)',
+    format: {
+      body: function(data, row, column, node) {
+        // Jika data adalah null atau undefined, ganti dengan string kosong
+        if (data === null || data === undefined) {
+          return '';
+        }
+        // Jika data berupa objek, ubah menjadi string
+        if (typeof data === 'object') {
+          return JSON.stringify(data);
+        }
+        // Jika data adalah angka, pastikan tetap dalam format angka
+        if (typeof data === 'number') {
+          return data.toString(); // Atau bisa disesuaikan jika ada format khusus
+        }
+        return data; // Mengembalikan data jika sudah valid
+      }
+    }
+  }
+      },
+      {
+        className: 'btn btn-secondary btn-sm',
+        extend: 'print',
+        text: 'Print',
+        title: 'Data Laporan Harian',
+        exportOptions: {
+          columns: ':not(:last-child)',
+        },
+      },
+    ],
+    columns: [
+      { data: 'nama', title: 'nama' },
+      { data: 'deskripsi', title: 'deskripsi' },
+      { data: 'gejala', title: 'gejala' },
+      { data: 'pengobatan', title: 'pengobatan' },
+      {data: null, // Menggunakan data null untuk kolom aksi
+    render: function (data, type, row) {
+      return `
+        <button class="btn btn-sm btn-primary btn-edit" data-id="${row.id}">Edit</button>
+        <button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}">Hapus</button>      `;
+    },
+    orderable: false, 
+    searchable: false}
+    
+    ],
+  
+    ajax: {
+      url: '/api/penyakit', // Endpoint untuk data tabel
+      type: 'GET',
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+      },
+      
+      dataSrc: function (json) {
+        console.log('API Response:', json);  
+        return json.data;  
+      },
+      error: function (xhr, error, thrown) {
+        console.error('Error loading data:', xhr.responseText);
+        alert('Error loading data. Check console or API response.');
+      },
+      
+    },
+    responsive: true,
+    language: {
+      emptyTable: "Tidak ada data tersedia",
+      lengthMenu: "Tampilkan _MENU_ entri",
+      search: "Cari:",
+      paginate: {
+        first: "Pertama",
+        last: "Terakhir",
+        next: "Berikutnya",
+        previous: "Sebelumnya",
+      },
+      info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+      infoEmpty: "Tidak ada entri untuk ditampilkan",
+    },
+  });
+});
   </script>
+  <script src="vendors/chart.js/Chart.min.js"></script>
+  <script src="/vendors/datatables.net/jquery.dataTables.js"></script>
+  <script src="/vendors/datatables.net/jszip.min.js"></script>
+  <script src="/vendors/datatables.net/dataTables.buttons.js"></script>
+  <script src="/vendors/datatables.net/pdfmake.min.js"></script>
+  <script src="/vendors/datatables.net/vfs_fonts.js"></script>
+  <script src="/vendors/datatables.net/buttons.html5.min.js"></script>
+  <script src="/vendors/datatables.net/buttons.print.min.js"></script>
+  <script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+  <script src="js/dataTables.select.min.js"></script>
 </html>
 

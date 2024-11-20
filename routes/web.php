@@ -7,9 +7,7 @@ Route::get('/', function () {
     return view('sign.register');
 });
 
-// Route::get('/login', function () {
-//     return view('sign.index');
-// });
+
 
 Route::get('/login', function () {
     return view('sign.index');
@@ -35,10 +33,6 @@ Route::get('/fkandang', function () {
         return view('pakan.form');
     });
 
-    // Route::get('/kandang', function () {
-    //     return view('kandang.index');
-    // });
-
     
 
     Route::get('/penyakit', function () {
@@ -58,7 +52,3 @@ Route::get('/fkandang', function () {
     });
 
 
-
-// Route::get('/', [SignController::class, 'index'])->name('login');
-// Route::get('/logout', [SignController::class, 'logout'])->name('logout');
-// Route::post('/auth', [SignController::class, 'auth'])->name('auth');

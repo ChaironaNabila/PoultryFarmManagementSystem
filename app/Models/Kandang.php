@@ -17,6 +17,10 @@ class Kandang extends Model
         'status',
     ];
 
+     protected $casts = [
+        'deactivated_at' => 'datetime',
+    ];
+
     public function isActive()
     {
         return $this->deactivated_at === null;

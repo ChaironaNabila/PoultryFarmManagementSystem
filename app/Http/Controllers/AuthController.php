@@ -29,8 +29,6 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('user_login')->plainTextToken;
-
-        session(['token' => $token, 'user' => $user]);
         
         return response()->json([
             'status' => Response::HTTP_OK,
@@ -39,8 +37,7 @@ class AuthController extends Controller
                 'token' => $token,
                 'user' => $user,
             ]
-        ]);
-        
+        ]);   
     }
 
     public function logout(Request $request)
@@ -98,7 +95,6 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:3',
-            // 'role' => 'sometimes|in:user,admin',
             'username' => 'required|string|max:255|unique:users',
         ]);
 
@@ -127,6 +123,41 @@ class AuthController extends Controller
             'data' => [
                 'user' => $user,
             ]
+        ], Response::HTTP_CREATED);
+    }
+
+    public function registerAdmin(Request $request)
+    {
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:3',
+            'username' => 'required|string|max:255|unique:users',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'message' => 'Validation error',
+                'errors' => $validator->errors(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Buat admin baru
+        $admin = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'role' => 'admin', // Tetapkan role sebagai admin
+            'email_verified_at' => now(),
+        ]);
+
+        return response()->json([
+            'status' => Response::HTTP_CREATED,
+            'message' => 'Admin created successfully',
+            'data' => $admin,
         ], Response::HTTP_CREATED);
     }
 }

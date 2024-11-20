@@ -5,10 +5,7 @@ use App\Models\Kandang;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use PhpParser\Node\Expr\Cast\String_;
+
 
 class KandangController extends Controller
 {

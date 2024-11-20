@@ -125,92 +125,87 @@
   <script>
   $(document).ready(function () {
     const token = sessionStorage.getItem('token');
-            console.log("Token di localStorage:", sessionStorage.getItem('token'));
+    console.log("Token di localStorage:", sessionStorage.getItem('token'));
 
-            if (!token) {
-                console.error("Token tidak ditemukan. Pastikan Anda sudah login.");
-                return;
-            }
+    if (!token) {
+        console.error("Token tidak ditemukan. Pastikan Anda sudah login.");
+        return;
+    }
     
-        $('#formkandang').validate({
-          rules: {
-            kode: {
-              required: true,
-            },
-            jenis_unggas: {
-              required: true
-            },
-            jumlah_unggas: {
-              required: true
-            }
-          },
-          messages: {
-            kode: {
-              required: 'Kode harus diisi',
-            },
-            jenis_unggas: {
-              required: 'Jenis harus diisi'
-            },
-            jumlah_unggas: {
-              required: 'Jumlah harus diisi'
-            }
-          },
-          errorClass:"text-danger",
-          submitHandler: function () {
-            
-
-            $.ajax({
-              url: "{{ url('/api/kandang') }}",
-              method:'POST',
-              type:'POST',
-              headers: {
-            'Authorization': 'Bearer ' + token 
+    $('#formkandang').validate({
+      rules: {
+        kode: {
+          required: true,
         },
-              data: {
-                kode: $('#kode').val(),
-                jenis_unggas:$('#jenis_unggas').val(),
-                jumlah_unggas:$('#jumlah_unggas').val(),
-                _token: '{{csrf_token()}}'
-              },
-              dataType:'json',
-              success: function(res){
-                if (res)
-                swal({
-                    title: 'Berhasil',
-                    text: ' Kandang berhasil ditambahkan',
-                    icon: 'success'
-                  }).then(()=>{
-                    window.location="{{ url('/kandang') }}";
-                  });
-                  
-                else{
-                  swal({
-                    title: 'Gagal',
-                    text: 'Penambahan gagal',
-                    icon: 'error'
-                  });
-                }
-              },
-              error: function(err) {
-                console.log(err);
-                swal({
-                    title: 'Gagal',
-                    text: err.responseJSON.message,
-                    icon: 'error'
-                  });
-              }
-
-            });
-          }        
+        jenis_unggas: {
+          required: true
+        },
+        jumlah_unggas: {
+          required: true
+        }
+      },
+      messages: {
+        kode: {
+          required: 'Kode harus diisi',
+        },
+        jenis_unggas: {
+          required: 'Jenis harus diisi'
+        },
+        jumlah_unggas: {
+          required: 'Jumlah harus diisi'
+        }
+      },
+      errorClass:"text-danger",
+      submitHandler: function () {
+        $.ajax({
+          url: "{{ url('/api/kandang') }}",
+          method:'POST',
+          type:'POST',
+          headers: {
+          'Authorization': 'Bearer ' + token 
+          },
+          data: {
+            kode: $('#kode').val(),
+            jenis_unggas:$('#jenis_unggas').val(),
+            jumlah_unggas:$('#jumlah_unggas').val(),
+            _token: '{{csrf_token()}}'
+          },
+          dataType:'json',
+          success: function(res){
+            if (res)
+            swal({
+                title: 'Berhasil',
+                text: ' Kandang berhasil ditambahkan',
+                icon: 'success'
+              }).then(()=>{
+                window.location="{{ url('/kandang') }}";
+              });
+            else{
+              swal({
+                title: 'Gagal',
+                text: 'Penambahan gagal',
+                icon: 'error'
+              });
+            }
+          },
+          error: function(err) {
+            console.log(err);
+            swal({
+                title: 'Gagal',
+                text: err.responseJSON.message,
+                icon: 'error'
+              });
+          }
         });
-    }); 
-    $(document).ready(function() {
-    $('#logout-button').click(function(e) {
-        e.preventDefault(); // Menghindari refresh halaman
-        
-        // Menampilkan SweetAlert konfirmasi sebelum logout
-        swal({
-            title: "Yakin mau logout?",
+      }        
+    });
+  }); 
+
+  $(document).ready(function() {
+      $('#logout-button').click(function(e) {
+        e.preventDefault(); 
+          swal({
+            title: "Kamu yakin?",
             text: "Kamu akan keluar dari akun!",
             icon: "warning",
             buttons: true,
@@ -218,27 +213,23 @@
         })
         .then((willLogout) => {
             if (willLogout) {
-                // Melakukan request logout menggunakan AJAX
                 $.ajax({
-                    url: '/api/logout', // Endpoint API untuk logout
-                    type: 'POST',   // Pastikan Anda menggunakan metode POST
+                    url: '/api/logout', 
+                    type: 'POST',   
                     headers: {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Pastikan token ada jika Anda menggunakan Bearer Token
                     },
                     success: function(response) {
-                        // Menampilkan SweetAlert jika logout sukses
                         swal({
                             title: "Logged Out!",
                             text: response.message,
                             icon: "success",
                         })
                         .then(() => {
-                            // Redirect ke halaman login setelah logout berhasil
-                            window.location.href = '/login'; // Ganti dengan URL login Anda
+                            window.location.href = '/login'; 
                         });
                     },
                     error: function(xhr, status, error) {
-                        // Menampilkan SweetAlert jika terjadi error
                         swal({
                             title: "Error!",
                             text: "Something went wrong while logging out. Please try again.",
@@ -248,8 +239,8 @@
                 });
             }
         });
-    });
-});
+      });
+      });
            
   </script>
   <!-- inject:js -->
@@ -262,7 +253,6 @@
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
   <script src="js/chart.js"></script>
-
   <script src="js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
 </body>

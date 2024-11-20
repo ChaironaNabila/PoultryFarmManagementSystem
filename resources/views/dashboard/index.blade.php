@@ -191,109 +191,107 @@
   <!-- End plugin js for this page -->
   <script>
     $(document).ready(function() {
-    const token = sessionStorage.getItem('token');
-    console.log('Token:', token); // Pastikan token ada
-    // sessionStorage.clear();
+      const token = sessionStorage.getItem('token');
+      console.log('Token:', token); // Pastikan token ada
+      // sessionStorage.clear();
 
-    if (!token) {
-    console.error("Token tidak ditemukan. Pastikan Anda sudah login.");
-    return window.location.href = '/login';;
-    }
+        if (!token) {
+        console.error("Token tidak ditemukan. Pastikan Anda sudah login.");
+        return window.location.href = '/login';;
+        }
 
-    $.ajax({
-    url: 'api/admin/dashboard',
-    method: 'GET',
-    headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-    },
-    success: function (response) {
-        if (response.status === 200) {
-            const data = response.data;
-            console.log("datanya:", data);
+        $.ajax({
+        url: 'api/admin/dashboard',
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        },
+        success: function (response) {
+            if (response.status === 200) {
+                const data = response.data;
+                console.log("Data1:", data);
 
-            $('#total_telur').text(data.total_telur + "butir");
-            updateTotalTelur(data.total_telur);
-            function updateTotalTelur(newTotalTelur) {
-            const currentTotalTelur = parseInt($('#total_telur').text()) || 0;
-            
-            // Cek apakah ada perubahan pada total telur
-            if (newTotalTelur !== currentTotalTelur) {
-                $('#total_telur').text(newTotalTelur + " butir");
+                $('#total_telur').text(data.total_telur + "butir");
+                updateTotalTelur(data.total_telur);
+                function updateTotalTelur(newTotalTelur) {
+                const currentTotalTelur = parseInt($('#total_telur').text()) || 0;
                 
-                // Optionally, tampilkan animasi atau efek pada perubahan nilai
-                $('#total_telur').fadeOut(200, function () {
-                    $(this).fadeIn(200);
+                // Cek apakah ada perubahan pada total telur
+                  if (newTotalTelur !== currentTotalTelur) {
+                      $('#total_telur').text(newTotalTelur + " butir");
+                      
+                      $('#total_telur').fadeOut(200, function () {
+                          $(this).fadeIn(200);
+                      });
+                  }
+                }
+
+                $('#produksi_telur').text(data.total_telur_per_hari + " butir/hari ini");
+                updateProduksiTelur(data.produksi_telur);
+
+                function updateProduksiTelur(newProduksiTelur) {
+                const currentProduksiTelur = parseInt($('#produksi_telur').text()) || 0;
+
+                  if (newProduksiTelur !== currentProduksiTelur) {
+                      $('#produksi_telur').text(newProduksiTelur );
+                      
+                      $('#produksi_telur').fadeOut(200, function () {
+                          $(this).fadeIn(200);
+                      });
+                  }
+                }
+
+                const ctx1 = document.getElementById('pieChart').getContext('2d');
+                const isZeroData = data.diagram_kesehatan.sehat === 0 && 
+                                  data.diagram_kesehatan.sakit === 0 && 
+                                  data.diagram_kesehatan.mati === 0;
+
+                const chartData = isZeroData ? [1, 0, 0] : [
+                    data.diagram_kesehatan.sehat, 
+                    data.diagram_kesehatan.sakit, 
+                    data.diagram_kesehatan.mati
+                ];
+                const chartLabels = isZeroData 
+                      ? ['Belum Ada Data', '', '']
+                      : [
+                          `Sehat (${data.diagram_kesehatan.sehat})`, 
+                          `Sakit (${data.diagram_kesehatan.sakit})`, 
+                          `Mati (${data.diagram_kesehatan.mati})`
+                      ];
+                const chartBackgroundColors = isZeroData 
+                    ? ['#e0e0e0', '#e0e0e0', '#e0e0e0']
+                    : ['rgba(56,166,62,1)', 'rgba(255,0,0,1)', 'rgba(230,255,0,1)'];
+
+                new Chart(ctx1, {
+                    type: 'pie',
+                    data: {
+                        labels: chartLabels,
+                        datasets: [{
+                            data: chartData,
+                            backgroundColor: chartBackgroundColors
+                        }]
+                    }
                 });
-            }
-            }
-
-            $('#produksi_telur').text(data.total_telur_per_hari + " butir/hari");
-            updateProduksiTelur(data.produksi_telur);
-
-            function updateProduksiTelur(newProduksiTelur) {
-              const currentProduksiTelur = parseInt($('#produksi_telur').text()) || 0;
-            if (newProduksiTelur !== currentProduksiTelur) {
-                $('#produksi_telur').text(newProduksiTelur );
+              
+                const ctx2 = document.getElementById('doughnutChart').getContext('2d');
+                const doughnutLabels = data.diagram_pakan.map(item => `${item.jenis} (${item.total_stok})`);
                 
-                // Optionally, tampilkan animasi atau efek pada perubahan nilai
-                $('#produksi_telur').fadeOut(200, function () {
-                    $(this).fadeIn(200);
+
+                new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: doughnutLabels,
+                        datasets: [{
+                            data: data.diagram_pakan.map(item => item.total_stok),
+                            backgroundColor: ['rgba(56,166,62,1)', 'rgba(255,0,0,1)', 'rgba(230,255,0,1)', 'rgba(390,255,0,1)']
+                        }]
+                    }
                 });
-            }
-            }
-
-            const ctx1 = document.getElementById('pieChart').getContext('2d');
-            const isZeroData = data.diagram_kesehatan.sehat === 0 && 
-                               data.diagram_kesehatan.sakit === 0 && 
-                               data.diagram_kesehatan.mati === 0;
-
-            const chartData = isZeroData ? [1, 0, 0] : [
-                data.diagram_kesehatan.sehat, 
-                data.diagram_kesehatan.sakit, 
-                data.diagram_kesehatan.mati
-            ];
-            const chartLabels = isZeroData 
-                  ? ['Belum Ada Data', '', '']
-                  : [
-                      `Sehat (${data.diagram_kesehatan.sehat})`, 
-                      `Sakit (${data.diagram_kesehatan.sakit})`, 
-                      `Mati (${data.diagram_kesehatan.mati})`
-                  ];
-            const chartBackgroundColors = isZeroData 
-                ? ['#e0e0e0', '#e0e0e0', '#e0e0e0']
-                : ['rgba(56,166,62,1)', 'rgba(255,0,0,1)', 'rgba(230,255,0,1)'];
-
-            new Chart(ctx1, {
-                type: 'pie',
-                data: {
-                    labels: chartLabels,
-                    datasets: [{
-                        data: chartData,
-                        backgroundColor: chartBackgroundColors
-                    }]
-                }
-            });
-          
-            const ctx2 = document.getElementById('doughnutChart').getContext('2d');
-            const doughnutLabels = data.diagram_pakan.map(item => `${item.jenis} (${item.total_stok})`);
-            
-
-            new Chart(ctx2, {
-                type: 'doughnut',
-                data: {
-                    labels: doughnutLabels,
-                    datasets: [{
-                        data: data.diagram_pakan.map(item => item.total_stok),
-                        backgroundColor: ['rgba(56,166,62,1)', 'rgba(255,0,0,1)', 'rgba(230,255,0,1)', 'rgba(390,255,0,1)']
-                    }]
-                }
-            });
-          }
+              }
         }
       });
 
-
-$.ajax({
+        $.ajax({
         url: '/api/laporan-harian', 
         method: 'GET',
         headers: {
@@ -302,10 +300,14 @@ $.ajax({
         success: function(response) {
             if (response.status === 200 && response.data.length > 0) {
               let laporanData = response.data;
-              console.log("datanya:", laporanData);
+              console.log("Data2:", laporanData);
 
               let tableBody = $('tbody'); // Ganti dengan selector yang sesuai
               laporanData.forEach(function(laporan) {
+                let createdAt = laporan.created_at ? new Date(laporan.created_at) : null;
+                let formattedDate = createdAt 
+                    ? `${String(createdAt.getDate()).padStart(2, '0')}/${String(createdAt.getMonth() + 1).padStart(2, '0')}/${createdAt.getFullYear()}`
+                    : 'Tanggal Tidak Ada';
                   let row = `<tr>
                       <td>${laporan.kandang ? laporan.kandang.kode : 'Data Tidak Ada'}</td>
                       <td>${laporan.user ? laporan.user.name : 'Data Tidak Ada'}</td>
@@ -316,7 +318,7 @@ $.ajax({
                       <td>${laporan.jumlah_sakit} ekor</td>
                       <td>${laporan.penyakit ? laporan.penyakit.nama : '-'}</td>
                       <td>${laporan.kematian} ekor</td>
-                      <td>${laporan.created_at}</td>
+                      <td>${formattedDate}</td>
                   </tr>`;
 
                   // Tambahkan row ke dalam tableBody
@@ -331,46 +333,39 @@ $.ajax({
                     <td colspan="6" class="text-center">Gagal memuat data</td>
                 </tr>
             `);
-            
         }
-    });
+        });
   
       // Event listener untuk tombol log out
       $(document).ready(function() {
-    $('#logout-button').click(function(e) {
-        e.preventDefault(); // Menghindari refresh halaman
-        
-        // Menampilkan SweetAlert konfirmasi sebelum logout
-        swal({
-            title: "Are you sure?",
-            text: "You will be logged out from your account!",
+      $('#logout-button').click(function(e) {
+        e.preventDefault(); 
+          swal({
+            title: "Kamu yakin?",
+            text: "Kamu akan keluar dari akun!",
             icon: "warning",
             buttons: true,
             dangerMode: true,
         })
         .then((willLogout) => {
             if (willLogout) {
-                // Melakukan request logout menggunakan AJAX
                 $.ajax({
-                    url: '/api/logout', // Endpoint API untuk logout
-                    type: 'POST',   // Pastikan Anda menggunakan metode POST
+                    url: '/api/logout', 
+                    type: 'POST',   
                     headers: {
-                        'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Pastikan token ada jika Anda menggunakan Bearer Token
+                        'Authorization': 'Bearer ' + sessionStorage.getItem('token'), 
                     },
                     success: function(response) {
-                        // Menampilkan SweetAlert jika logout sukses
                         swal({
                             title: "Logged Out!",
                             text: response.message,
                             icon: "success",
                         })
                         .then(() => {
-                            // Redirect ke halaman login setelah logout berhasil
-                            window.location.href = '/login'; // Ganti dengan URL login Anda
+                            window.location.href = '/login'; 
                         });
                     },
                     error: function(xhr, status, error) {
-                        // Menampilkan SweetAlert jika terjadi error
                         swal({
                             title: "Error!",
                             text: "Something went wrong while logging out. Please try again.",
@@ -380,10 +375,9 @@ $.ajax({
                 });
             }
         });
+      });
+      });
     });
-});
-
-  });
 </script>
 
 
