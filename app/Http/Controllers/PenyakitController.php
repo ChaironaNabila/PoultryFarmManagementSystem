@@ -85,4 +85,14 @@ class PenyakitController extends Controller
         ]);
     }
 
+    // Endpoint untuk mendapatkan seluruh gejala unik
+    public function getGejala()
+    {
+        $penyakit = Penyakit::select('id', 'gejala')->distinct()->get();
+
+        return response()->json([
+            'status' => Response::HTTP_OK,
+            'data' => $penyakit
+        ]);
+    }
 }

@@ -14,4 +14,9 @@ class Pakan extends Model
         'jenis',
         'stok',
     ];
+
+    public function laporanHarians()
+    {
+        return $this->hasMany(LaporanHarian::class, 'id_pakan');
+    }
 }

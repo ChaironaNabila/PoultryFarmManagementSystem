@@ -51,6 +51,10 @@ class User extends Authenticatable
         ];
     }
 
+    public function laporanHarians()
+    {
+        return $this->hasMany(LaporanHarian::class, 'id_user');
+    }
     // public function isAdmin()
     // {
     //     return $this->role === 'admin';

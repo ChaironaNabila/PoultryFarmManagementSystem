@@ -28,7 +28,7 @@ class PakanController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'jenis' => 'required|string|max:255',
-            'stok' => 'required|integer|min:0',
+            'stok' => 'required|numeric|min:0',
         ]);
 
         $pakan = Pakan::create($request->all());
@@ -58,7 +58,7 @@ class PakanController extends Controller
         $request->validate([
             'nama' => 'sometimes|string|max:255',
             'jenis' => 'sometimes|string|max:255',
-            'stok' => 'sometimes|integer|min:0',
+            'stok' => 'sometimes|numeric|min:0',
         ]);
 
         $pakan = Pakan::findOrFail($id);
@@ -72,7 +72,7 @@ class PakanController extends Controller
     }
 
     // Menghapus pakan
-    public function destroy($id)
+    public function delete($id)
     {
         $pakan = Pakan::findOrFail($id);
         $pakan->delete();
@@ -83,4 +83,24 @@ class PakanController extends Controller
         ]);
     }
 
+    public function getAllPakan()
+    {   
+        // Ambil semua data pakan, dikelompokkan berdasarkan jenis
+        $pakanData = Pakan::select('id', 'jenis', 'nama')
+            ->get()
+            ->groupBy('jenis')
+            ->map(function ($items) {
+                return $items->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'nama' => $item->nama
+                    ];
+                });
+            });
+
+        return response()->json([
+            'status' => Response::HTTP_OK,
+            'data' => $pakanData
+        ]);
+    }
 }

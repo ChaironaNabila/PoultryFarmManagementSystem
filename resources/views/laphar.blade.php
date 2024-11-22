@@ -218,10 +218,9 @@ $.ajax({
         
         // Menampilkan SweetAlert konfirmasi sebelum logout
         swal({
-            title: "Are you sure?",
-            text: "You will be logged out from your account!",
+            title: "Kamu yakin?",
+            text: "Kamu akan keluar dari akun!",
             icon: "warning",
-            buttons: true,
             dangerMode: true,
         })
         .then((willLogout) => {

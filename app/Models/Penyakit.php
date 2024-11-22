@@ -16,4 +16,8 @@ class Penyakit extends Model
         'pengobatan',
     ];
 
+    public function laporanHarians()
+    {
+        return $this->hasMany(LaporanHarian::class, 'id_penyakit');
+    }
 };
