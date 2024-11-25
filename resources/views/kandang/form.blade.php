@@ -158,7 +158,7 @@
       errorClass:"text-danger",
       submitHandler: function () {
         $.ajax({
-          url: "{{ url('/api/kandang') }}",
+          url: "https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/kandang",
           method:'POST',
           type:'POST',
           headers: {
@@ -214,7 +214,7 @@
         .then((willLogout) => {
             if (willLogout) {
                 $.ajax({
-                    url: '/api/logout', 
+                    url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/logout', 
                     type: 'POST',   
                     headers: {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Pastikan token ada jika Anda menggunakan Bearer Token

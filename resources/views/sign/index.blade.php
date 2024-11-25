@@ -31,7 +31,6 @@
               <h4>Halo, selamat datang ><</h4>
               <h6 class="font-weight-light">Silahkan Sign In</h6>
               <form class="pt-3"  id="loginform">
-                @csrf
                 <div class="form-group">
                   <input type="identifier" class="form-control form-control-lg" id="identifier" placeholder="Email atau Username" name="identifier" required>
                 </div>
@@ -60,7 +59,7 @@
   <!-- End plugin js for this page -->
   <script>
     $(document).ready(function () {
-          // sessionStorage.clear();
+          sessionStorage.clear();
 
         $('#loginform').on('submit', function (event) {
             event.preventDefault();
@@ -69,16 +68,15 @@
             const password = $('#password').val();
 
             $.ajax({
-                url: "{{ url('/api/login') }}",
+                url: "https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/login",
                 method: 'POST',
                 headers: {
-                    'Accept': 'application/json', // Tambahkan ini
-                    'Content-Type': 'application/json'
+                    'Accept': 'application/json', 
+                    'Content-Type': 'application/json',
                 },
                 data: JSON.stringify({
                     identifier: identifier,
-                    password: password,
-                    _token: '{{csrf_token()}}'
+                    password: password
                 }),
                 dataType: 'json',
                 success: function (response) {
@@ -96,11 +94,10 @@
                     }
                 },
                 error: function (xhr) {
-                    const errorMessage = xhr.responseJSON && xhr.responseJSON.message 
-                        ? xhr.responseJSON.message 
-                        : 'Terjadi kesalahan, periksa kredensial Anda.';
-                    alert('Error: ' + errorMessage);
-                }
+        console.error('Error status:', xhr.status);
+        console.error('Error message:', xhr.responseText);
+        console.error('Response headers:', xhr.getAllResponseHeaders());
+    }
             });
         });
     });

@@ -170,10 +170,10 @@ $.ajax({
 });
 
     $.ajax({
-        url: '/api/laporan-harian', // Sesuaikan dengan URL API
+        url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/laporan-harian', 
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer ' + token // Pastikan token dikirim dengan benar
+            'Authorization': 'Bearer ' + token 
         },
         success: function(response) {
           console.log()
@@ -227,8 +227,8 @@ $.ajax({
             if (willLogout) {
                 // Melakukan request logout menggunakan AJAX
                 $.ajax({
-                    url: '/api/logout', // Endpoint API untuk logout
-                    type: 'POST',   // Pastikan Anda menggunakan metode POST
+                    url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/logout', 
+                    type: 'POST',   
                     headers: {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Pastikan token ada jika Anda menggunakan Bearer Token
                     },
@@ -337,13 +337,13 @@ $(document).ready(function () {
       { data: 'updated_at',
         render: function (data) {
       let date = new Date(data);
-      return date.toLocaleDateString('id-ID'); // Format tanggal sesuai lokal Indonesia
+      return date.toLocaleDateString('id-ID'); 
     }
        },
     ],
   
     ajax: {
-      url: '/api/laporan-harian', // Endpoint untuk data tabel
+      url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/laporan-harian', 
       type: 'GET',
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem('token')}`,

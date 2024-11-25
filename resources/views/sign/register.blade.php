@@ -106,7 +106,7 @@
             errorClass: "text-danger",
             submitHandler: function () {
                 $.ajax({
-                    url: "{{ url('/api/registerAdmin') }}",
+                    url: "https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/registerAdmin",
                     method: 'POST',
                     data: {
                         name: $('#name').val(),

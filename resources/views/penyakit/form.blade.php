@@ -202,7 +202,7 @@
           submitHandler: function () {
 
             $.ajax({
-              url: "{{ url('/api/penyakit') }}",
+              url: "https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/penyakit",
               method:'POST',
               type:'POST',
               headers: {
@@ -263,7 +263,7 @@
             if (willLogout) {
                 // Melakukan request logout menggunakan AJAX
                 $.ajax({
-                    url: '/api/logout', // Endpoint API untuk logout
+                    url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/logout', // Endpoint API untuk logout
                     type: 'POST',   // Pastikan Anda menggunakan metode POST
                     headers: {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Pastikan token ada jika Anda menggunakan Bearer Token

@@ -201,7 +201,7 @@
         }
 
         $.ajax({
-        url: 'api/admin/dashboard',
+        url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/admin/dashboard',
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('token')
@@ -292,7 +292,7 @@
       });
 
         $.ajax({
-        url: '/api/laporan-harian', 
+        url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/laporan-harian', 
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + token 
@@ -333,6 +333,18 @@
                     <td colspan="6" class="text-center">Gagal memuat data</td>
                 </tr>
             `);
+        },
+        error: function (xhr) {
+            // Menangani error API
+            console.error('Error terjadi saat memanggil API:');
+            console.error('Status Kode:', xhr.status); // Menampilkan status kode
+            console.error('Pesan Error:', xhr.responseJSON ? xhr.responseJSON.message : 'Tidak ada pesan error.');
+
+            // Menampilkan pesan error di console secara detail
+            console.error('Detail Error:', xhr);
+
+            // Menampilkan pesan error kepada pengguna (opsional)
+            alert('Terjadi kesalahan: ' + (xhr.responseJSON ? xhr.responseJSON.message : 'Periksa koneksi atau kredensial Anda.'));
         }
         });
   
@@ -350,7 +362,7 @@
         .then((willLogout) => {
             if (willLogout) {
                 $.ajax({
-                    url: '/api/logout', 
+                    url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/logout', 
                     type: 'POST',   
                     headers: {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token'), 

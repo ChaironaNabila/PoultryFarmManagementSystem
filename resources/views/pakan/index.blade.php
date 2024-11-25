@@ -123,7 +123,6 @@
         </div>
         <div class="modal-body">
           <form id="editForm">
-            @csrf
             <div class="form-group">
               <label for="nama">Nama Pakan</label>
               <input type="text" class="form-control" id="edit_nama" name="nama">
@@ -179,10 +178,10 @@
     }
 
     $.ajax({
-        url: '/api/pakan', // Sesuaikan dengan URL API
+        url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/pakan', 
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer ' + token // Pastikan token dikirim dengan benar
+            'Authorization': 'Bearer ' + token 
         },
         success: function(response) {
             if (response.status === 200 && response.data.length > 0) {
@@ -196,7 +195,7 @@
                             <td>${pakan.nama}</td>
                             <td>${pakan.jenis}</td>
                             <td>${pakan.stok} kg</td>
-                            <td>${formattedCreatedAt}</td>
+                            <td>${pakan.created_at}</td>
                             <td>
                                 <button class="btn btn-sm btn-primary btn-edit" data-id="${pakan.id}">Edit</button>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="${pakan.id}">Hapus</button>
@@ -210,15 +209,15 @@
           // Event listener untuk tombol Edit
 
           $(document).on('click', '.btn-edit', function() {
-            const editId = $(this).data('id'); // Ambil ID dari tombol Edit yang diklik
-            $('#editModal').data('id', editId); // Simpan ID ke dalam modal
+            const editId = $(this).data('id'); 
+            $('#editModal').data('id', editId); 
 
             // Panggil API untuk mendapatkan data pakan
             $.ajax({
-                url: `/api/pakan/${editId}`,
+                url: `https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/pakan/${editId}`,
                 method: 'GET',
                 headers: {
-                  'Authorization': 'Bearer ' + token // Pastikan token dikirim dengan benar
+                  'Authorization': 'Bearer ' + token 
               },
                 success: function(response) {
                     if (response.data) {
@@ -242,7 +241,6 @@
               // Ambil editId dari data modal
               const editId = $('#editModal').data('id'); 
 
-              // Data yang akan dikirim ke server
               const data = {
                   nama: $('#edit_nama').val(),
                   jenis: $('#edit_jenis').val(),
@@ -252,7 +250,7 @@
 
               // Mengirim data ke API untuk disimpan
               $.ajax({
-                  url: `/api/pakan/${editId}`,
+                  url: `https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/pakan/${editId}`,
                   method: 'PUT',
                   data: data,
                   headers: {
@@ -302,12 +300,12 @@
                     };
               
         $.ajax({
-            url: `/api/pakan/${id}`, // URL API untuk delete
+            url: `https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/pakan/${id}`, 
             method: 'DELETE',
             
             data: data2,
             headers: {
-                'Authorization': 'Bearer ' + token // Jangan lupa set token
+                'Authorization': 'Bearer ' + token 
             },
             success: function(res){
                 if (res)
@@ -366,7 +364,7 @@
             if (willLogout) {
                 // Melakukan request logout menggunakan AJAX
                 $.ajax({
-                    url: '/api/logout', // Endpoint API untuk logout
+                    url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/logout', // Endpoint API untuk logout
                     type: 'POST',   // Pastikan Anda menggunakan metode POST
                     headers: {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Pastikan token ada jika Anda menggunakan Bearer Token
@@ -433,17 +431,14 @@ $(document).ready(function () {
     columns: ':not(:last-child)',
     format: {
       body: function(data, row, column, node) {
-        // Jika data adalah null atau undefined, ganti dengan string kosong
         if (data === null || data === undefined) {
           return '';
         }
-        // Jika data berupa objek, ubah menjadi string
         if (typeof data === 'object') {
           return JSON.stringify(data);
         }
-        // Jika data adalah angka, pastikan tetap dalam format angka
         if (typeof data === 'number') {
-          return data.toString(); // Atau bisa disesuaikan jika ada format khusus
+          return data.toString();
         }
         return data; // Mengembalikan data jika sudah valid
       }
@@ -469,20 +464,19 @@ $(document).ready(function () {
       { data: 'telur', title: 'Telur' },
       { data: 'jumlah_sakit', title: 'Sakit' },
       { data: 'penyakit.nama', title: 'Penyakit', render: function (data) {
-          // Cek jika data null atau undefined, lalu ganti dengan string kosong atau default value
           return data ? data : 'Data Tidak Tersedia';
         }, },
       { data: 'kematian', title: 'Kematian' },
       { data: 'updated_at',
         render: function (data) {
       let date = new Date(data);
-      return date.toLocaleDateString('id-ID'); // Format tanggal sesuai lokal Indonesia
+      return date.toLocaleDateString('id-ID'); 
     }
        },
     ],
   
     ajax: {
-      url: '/api/pakan', // Endpoint untuk data tabel
+      url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/pakan', 
       type: 'GET',
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem('token')}`,
@@ -513,7 +507,7 @@ $(document).ready(function () {
     render: function (data, type, row) {
       return `
         <button class="btn btn-sm btn-primary btn-edit" data-id="${row.id}">Edit</button>
-        <button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}">Hapus</button>      `;
+        <button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}">Hapus</button>`;
     },
     orderable: false, 
     searchable: false}

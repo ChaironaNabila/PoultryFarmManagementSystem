@@ -210,7 +210,7 @@ max-width: 200px; /* Sesuaikan lebar maksimum kolom sesuai keperluan */
     }
 
     $.ajax({
-        url: '/api/penyakit', // Sesuaikan dengan URL API
+        url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/penyakit', // Sesuaikan dengan URL API
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + token // Pastikan token dikirim dengan benar
@@ -242,7 +242,7 @@ max-width: 200px; /* Sesuaikan lebar maksimum kolom sesuai keperluan */
 
             // Panggil API untuk mendapatkan data pakan
             $.ajax({
-                url: `/api/penyakit/${editId}`,
+                url: `https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/penyakit/${editId}`,
                 method: 'GET',
                 headers: {
                   'Authorization': 'Bearer ' + token // Pastikan token dikirim dengan benar
@@ -282,7 +282,7 @@ max-width: 200px; /* Sesuaikan lebar maksimum kolom sesuai keperluan */
 
               // Mengirim data ke API untuk disimpan
               $.ajax({
-                  url: `/api/penyakit/${editId}`,
+                  url: `https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/penyakit/${editId}`,
                   method: 'PUT',
                   data: data,
                   headers: {
@@ -334,7 +334,7 @@ max-width: 200px; /* Sesuaikan lebar maksimum kolom sesuai keperluan */
                     };
               
         $.ajax({
-            url: `/api/penyakit/${id}`, // URL API untuk delete
+            url: `https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/penyakit/${id}`, 
             method: 'DELETE',
             
             data: data2,
@@ -403,7 +403,7 @@ max-width: 200px; /* Sesuaikan lebar maksimum kolom sesuai keperluan */
             if (willLogout) {
                 // Melakukan request logout menggunakan AJAX
                 $.ajax({
-                    url: '/api/logout', // Endpoint API untuk logout
+                    url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/logout', // Endpoint API untuk logout
                     type: 'POST',   // Pastikan Anda menggunakan metode POST
                     headers: {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Pastikan token ada jika Anda menggunakan Bearer Token
@@ -514,7 +514,7 @@ $(document).ready(function () {
     ],
   
     ajax: {
-      url: '/api/penyakit', // Endpoint untuk data tabel
+      url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/penyakit', 
       type: 'GET',
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem('token')}`,

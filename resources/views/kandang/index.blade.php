@@ -196,8 +196,8 @@
           }
       });
 
-    $.ajax({
-        url: '/api/kandang', 
+      $.ajax({
+        url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/kandang', 
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + token 
@@ -205,9 +205,9 @@
         success: function(response) {
             if (response.status === 200 && response.data.length > 0) {
                 response.data.forEach(function(kandang) {
-                  const createdAt = kandang.created_at ? new Date(kandang.created_at) : null;
+                  // const createdAt = kandang.created_at ? new Date(kandang.created_at) : null;
                   const deactivatedAt = kandang.deactivated_at ? new Date(kandang.deactivated_at) : null;
-                  const formattedCreatedAt = createdAt ? createdAt.toLocaleDateString('en-GB') : '-';
+                  // const formattedCreatedAt = createdAt ? createdAt.toLocaleDateString('en-GB') : '-';
                   const formattedDeactivatedAt = deactivatedAt ? deactivatedAt.toLocaleDateString('en-GB') : '-';
                     $('tbody').append(`
                         <tr>
@@ -219,7 +219,7 @@
                                 ${kandang.status}
                             </span>
                             </td>
-                            <td>${formattedCreatedAt}</td>
+                            <td>${kandang.created_at}</td>
                             <td>${formattedDeactivatedAt}</td>
                             <td>
                                 <button class="btn btn-sm btn-primary btn-edit" data-id="${kandang.id}">Edit</button>
@@ -234,7 +234,7 @@
                 $('#editModal').data('id', editId); 
 
                 $.ajax({
-                    url: `/api/kandang/${editId}`,
+                    url: `https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/kandang/${editId}`,
                     method: 'GET',
                     headers: {
                       'Authorization': 'Bearer ' + token 
@@ -254,7 +254,7 @@
                         console.error('Gagal mengambil data:', xhr);
                     }
                 });
-                });
+              });
 
     // Event listener untuk tombol Save Changes di modal
           $('#saveChanges').on('click', function() {
@@ -271,7 +271,7 @@
               };
 
               $.ajax({
-                  url: `/api/kandang/${editId}`,
+                  url: `https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/kandang/${editId}`,
                   method: 'PUT',
                   data: data,
                   headers: {
@@ -309,15 +309,18 @@
               </tr>
           `);
       }
-        },
+    },
+    error: function (xhr) {
+            // Menangani error API
+            console.error('Error terjadi saat memanggil API:');
+            console.error('Status Kode:', xhr.status); // Menampilkan status kode
+            console.error('Pesan Error:', xhr.responseJSON ? xhr.responseJSON.message : 'Tidak ada pesan error.');
 
-        error: function(xhr) {
-            console.error('Error fetching data:', xhr);
-            $('tbody').append(`
-                <tr>
-                    <td colspan="6" class="text-center">Gagal memuat data</td>
-                </tr>
-            `);
+            // Menampilkan pesan error di console secara detail
+            console.error('Detail Error:', xhr);
+
+            // Menampilkan pesan error kepada pengguna (opsional)
+            alert('Terjadi kesalahan: ' + (xhr.responseJSON ? xhr.responseJSON.message : 'Periksa koneksi atau kredensial Anda.'));
         }
     });
   });
@@ -335,10 +338,10 @@
         .then((willLogout) => {
             if (willLogout) {
                 $.ajax({
-                    url: '/api/logout', 
+                    url: 'https://poultreaseapi-ekarhzgnb9ddbkay.southeastasia-01.azurewebsites.net/api/logout', 
                     type: 'POST',   
                     headers: {
-                        'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Pastikan token ada jika Anda menggunakan Bearer Token
+                        'Authorization': 'Bearer ' + sessionStorage.getItem('token'), 
                     },
                     success: function(response) {
                         swal({
@@ -361,135 +364,135 @@
             }
         });
       });
-      });
+    });
 
-$(document).ready(function () {
-  // Inisialisasi DataTables dengan fitur Export
-  $('.table').DataTable({
-    processing: true,  
-    serverSide: true,
-    // Nonaktifkan fitur advanced table
-    searching: false,      // Nonaktifkan fitur pencarian
-        ordering: false,       // Nonaktifkan sorting kolom
-        paging: false,         // Nonaktifkan pagination
-        info: false, 
-    dom: "<'row'<'col-4'B>>rt<'row'<'col-6'p>>",
-    buttons: [
-      {
-        className: 'btn btn-danger btn-sm',
-        extend: 'pdfHtml5',
-        text: 'PDF',
-        title: 'Data Kandang',
-        orientation: 'landscape',
-        pageSize: 'A4',
-        exportOptions: {
-          columns: ':not(:last-child)',
-        },
-        customize: function (doc) {
-          doc.styles.tableHeader.alignment = 'center';
-          doc.styles.title = {
-            alignment: 'center',
-            fontSize: 18,
-            bold: true,
-          };
-          doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1)
-            .join('*')
-            .split('');
-        },
-      },
-      {
-        className: 'btn btn-success btn-sm',
-        extend: 'excelHtml5',
-        text: 'Excel',
-        title: 'Data Kandang',
-        exportOptions: {
-          columns: ':not(:last-child)',
-          format: {
-      body: function(data, row, column, node) {
-       if (data === null || data === undefined) {
-          return '';
-        }
-        if (typeof data === 'object') {
-          return JSON.stringify(data);
-        }
-        if (typeof data === 'number') {
-          return data.toString(); 
-        }
-        return data; 
-      }
-    }
-        },
-      },
-      {
-        className: 'btn btn-secondary btn-sm',
-        extend: 'print',
-        text: 'Print',
-        title: '<h4>Data Kandang</h4>',
-        exportOptions: {
-          columns: ':not(:last-child)',
-        },
-      },
-    ],
-    columns: [
-      { data: 'kode' },
-      { data: 'jenis_unggas' },
-      { data: 'jumlah_unggas' },
-      {
-      data: 'status',
-      render: function (data, type, row) {
-        // Gunakan badge dengan warna sesuai status
-        let badgeClass = data === 'aktif' ? 'badge-success' : 'badge-danger';
-        return `
-          <span class="badge ${badgeClass}">
-            ${data}
-          </span>
-        `;
-      },
-      title: 'Status' },
-      { data: 'created_at',
-        render: function (data) {
-      let date = new Date(data);
-      return date.toLocaleDateString('id-ID'); 
-    }
-       },
-      { data: 'deactivated_at',
-        render: function (data) {
-          if (data === null) {
-          return '-'; 
-    }
-          let date = new Date(data);
-          return date.toLocaleDateString('id-ID'); 
-        }
-       },
-       {data: null, 
-    render: function (data, type, row) {
-      return `
-        <button class="btn btn-sm btn-primary btn-edit" data-id="${row.id}">Edit</button>
-      `;
-    },
-    orderable: false, 
-    searchable: false}
-    ],
-    ajax: {
-      url: '/api/kandang', 
-      type: 'GET',
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-      },
+// $(document).ready(function () {
+//   // Inisialisasi DataTables dengan fitur Export
+//   $('.table').DataTable({
+//     processing: true,  
+//     serverSide: true,
+//     // Nonaktifkan fitur advanced table
+//     searching: false,      // Nonaktifkan fitur pencarian
+//         ordering: false,       // Nonaktifkan sorting kolom
+//         paging: false,         // Nonaktifkan pagination
+//         info: false, 
+//     dom: "<'row'<'col-4'B>>rt<'row'<'col-6'p>>",
+//     buttons: [
+//       {
+//         className: 'btn btn-danger btn-sm',
+//         extend: 'pdfHtml5',
+//         text: 'PDF',
+//         title: 'Data Kandang',
+//         orientation: 'landscape',
+//         pageSize: 'A4',
+//         exportOptions: {
+//           columns: ':not(:last-child)',
+//         },
+//         customize: function (doc) {
+//           doc.styles.tableHeader.alignment = 'center';
+//           doc.styles.title = {
+//             alignment: 'center',
+//             fontSize: 18,
+//             bold: true,
+//           };
+//           doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1)
+//             .join('*')
+//             .split('');
+//         },
+//       },
+//       {
+//         className: 'btn btn-success btn-sm',
+//         extend: 'excelHtml5',
+//         text: 'Excel',
+//         title: 'Data Kandang',
+//         exportOptions: {
+//           columns: ':not(:last-child)',
+//           format: {
+//       body: function(data, row, column, node) {
+//        if (data === null || data === undefined) {
+//           return '';
+//         }
+//         if (typeof data === 'object') {
+//           return JSON.stringify(data);
+//         }
+//         if (typeof data === 'number') {
+//           return data.toString(); 
+//         }
+//         return data; 
+//       }
+//     }
+//         },
+//       },
+//       {
+//         className: 'btn btn-secondary btn-sm',
+//         extend: 'print',
+//         text: 'Print',
+//         title: '<h4>Data Kandang</h4>',
+//         exportOptions: {
+//           columns: ':not(:last-child)',
+//         },
+//       },
+//     ],
+//     columns: [
+//       { data: 'kode' },
+//       { data: 'jenis_unggas' },
+//       { data: 'jumlah_unggas' },
+//       {
+//       data: 'status',
+//       render: function (data, type, row) {
+//         // Gunakan badge dengan warna sesuai status
+//         let badgeClass = data === 'aktif' ? 'badge-success' : 'badge-danger';
+//         return `
+//           <span class="badge ${badgeClass}">
+//             ${data}
+//           </span>
+//         `;
+//       },
+//       title: 'Status' },
+//       { data: 'created_at',
+//         render: function (data) {
+//       let date = new Date(data);
+//       return date.toLocaleDateString('id-ID'); 
+//     }
+//        },
+//       { data: 'deactivated_at',
+//         render: function (data) {
+//           if (data === null) {
+//           return '-'; 
+//     }
+//           let date = new Date(data);
+//           return date.toLocaleDateString('id-ID'); 
+//         }
+//        },
+//        {data: null, 
+//     render: function (data, type, row) {
+//       return `
+//         <button class="btn btn-sm btn-primary btn-edit" data-id="${row.id}">Edit</button>
+//       `;
+//     },
+//     orderable: false, 
+//     searchable: false}
+//     ],
+//     ajax: {
+//       url: 'https://effysync-h5b6dhc9ega7bkht.southeastasia-01.azurewebsites.net/api/kandang', 
+//       type: 'GET',
+//       headers: {
+//         Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+//       },
       
-      dataSrc: function (json) {
-        console.log('API Response:', json);  
-        return json.data;  
-      },
-      error: function (xhr, error, thrown) {
-        console.error('Error loading data:', xhr.responseText);
-        alert('Error loading data. Check console or API response.');
-      },
-    },
-    complete: function() {
-        table.processing(false);  
-      },
-    responsive: true,
+//       dataSrc: function (json) {
+//         console.log('API Response:', json);  
+//         return json.data;  
+//       },
+//       error: function (xhr, error, thrown) {
+//         console.error('Error loading data:', xhr.responseText);
+//         alert('Error loading data. Check console or API response.');
+//       },
+//     },
+//     complete: function() {
+//         table.processing(false);  
+//       },
+//     responsive: true,
     // language: {
     //   emptyTable: "Tidak ada data tersedia",
     //   lengthMenu: "Tampilkan _MENU_ entri",
@@ -503,8 +506,8 @@ $(document).ready(function () {
     //   info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
     //   infoEmpty: "Tidak ada entri untuk ditampilkan",
     // },
-  });
-});
+//   });
+// });
 
   </script>
   <!-- Plugin js for this page -->
