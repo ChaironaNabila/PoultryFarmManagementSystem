@@ -3,6 +3,7 @@
 Poultry Farm Management System is a web and mobile application designed to optimize poultry farm management operations. The system helps farm owners record and monitor daily farm activities such as poultry population, feed usage, egg production, and poultry health conditions.
 
 This project was developed as part of coursework for Web Programming, Mobile Programming, and Cloud Computing. The system is designed to improve efficiency in poultry farm management by utilizing a REST API architecture that enables seamless integration between web and mobile applications.
+
 ---
 
 ## 👩‍💻 My Role
